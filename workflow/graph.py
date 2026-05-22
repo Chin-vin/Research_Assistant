@@ -295,15 +295,15 @@ builder.add_edge(
     "pdf_retriever"
 )
 
-# builder.add_edge(
-#     "pdf_retriever",
-#     "arxiv_retriever"
-# )
+builder.add_edge(
+    "pdf_retriever",
+    "arxiv_retriever"
+)
 
-# builder.add_edge(
-#     "arxiv_retriever",
-#     "analyzer"
-# )
+builder.add_edge(
+    "arxiv_retriever",
+    "analyzer"
+)
 
 builder.add_edge(
     "pdf_retriever",
