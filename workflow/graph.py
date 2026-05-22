@@ -153,8 +153,24 @@ builder.add_node(
 )
 
 builder.add_node(
+
     "human_approval",
-    human_approval_agent
+
+    lambda state:
+        safe_execute(
+            human_approval_agent,
+            state
+        )
+)
+builder.add_node(
+
+    "human_intent_router",
+
+    lambda state:
+        safe_execute(
+            human_intent_router_agent,
+            state
+        )
 )
 # -----------------------------------
 # ENTRY POINT
@@ -164,12 +180,7 @@ builder.set_entry_point(
     "supervisor"
 )
 
-builder.add_node(
 
-    "human_intent_router",
-
-    human_intent_router_agent
-)
 # -----------------------------------
 # SUPERVISOR ROUTING
 # -----------------------------------
@@ -177,9 +188,19 @@ builder.add_node(
 builder.add_conditional_edges(
 
     "supervisor",
-
     lambda state:
-        state["next_agent"],
+
+    "FINISH"
+
+    if state.get(
+        "critical_error",
+        False
+    )
+
+    else state.get(
+        "next_agent",
+        "FINISH"
+    ),
 
     {
 
@@ -214,7 +235,18 @@ builder.add_conditional_edges(
     "human_intent_router",
 
     lambda state:
-        state["next_agent"],
+
+    "FINISH"
+
+    if state.get(
+        "critical_error",
+        False
+    )
+
+    else state.get(
+        "next_agent",
+        "FINISH"
+    ),
 
     {
 
@@ -234,7 +266,10 @@ builder.add_conditional_edges(
             "validator",
 
         "reporter":
-            "reporter"
+            "reporter",
+        
+        "FINISH":
+        END
     }
 )
 # -----------------------------------
@@ -282,17 +317,52 @@ builder.add_edge(
     "analyzer",
     "validator"
 )
-builder.add_edge(
+builder.add_conditional_edges(
+
     "validator",
-    "human_approval"
+
+    lambda state:
+
+        "FINISH"
+
+        if state.get(
+            "critical_error",
+            False
+        )
+
+        else state.get(
+            "next_agent",
+            "human_approval"
+        ),
+
+    {
+
+        "human_approval":
+            "human_approval",
+
+        "reporter":
+            "reporter",
+
+        "FINISH":
+            END
+    }
 )
+# builder.add_edge(
+#     "validator",
+#     "human_approval"
+# )
 
 builder.add_conditional_edges(
 
     "human_approval",
 
     lambda state:
-        state["next_agent"],
+        "FINISH" 
+        if state.get("critical_error",False)
+        else state.get(
+    "next_agent",
+    "FINISH"
+),
 
     {
 
@@ -312,11 +382,30 @@ builder.add_conditional_edges(
             END
     }
 )
-builder.add_edge(
-    "reporter",
-    END
-)
+builder.add_conditional_edges(
 
+    "reporter",
+
+    lambda state:
+
+        "FINISH"
+
+        if state.get(
+            "critical_error",
+            False
+        )
+
+        else "SUCCESS",
+
+    {
+
+        "SUCCESS":
+            END,
+
+        "FINISH":
+            END
+    }
+)
 # -----------------------------------
 # COMPILE GRAPH
 # -----------------------------------

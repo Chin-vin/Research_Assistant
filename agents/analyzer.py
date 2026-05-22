@@ -145,11 +145,29 @@ CONTENT:
     # LLM ANALYSIS
     # --------------------------------
 
-    response = structured_llm.invoke(
-        prompt
-    )
+    try:
 
-    analysis = response.model_dump()
+        response = structured_llm.invoke(
+            prompt
+        )
+    
+        if response is None:
+        
+            raise Exception(
+                "LLM returned empty response"
+            )
+    
+        analysis = response.model_dump()
+    
+    except Exception as e:
+    
+        print("\n========== ANALYSIS ERROR ==========\n")
+    
+        print(str(e))
+    
+        raise Exception(
+            f"Analysis generation failed: {str(e)}"
+        )
     print("Final Analysis")
     print(analysis)
     return {

@@ -122,40 +122,23 @@ def reporting_agent(state):
         report = response.model_dump()
 
     except Exception as e:
-
+        
         print(
             f"\nReport Generation Error: {e}"
         )
-
-        report = {
-
-    "title":
-        "Research Report",
-
-    "abstract":
-        "Unable to generate abstract.",
-
-    "keywords":
-        [
-            "Artificial Intelligence",
-            "Research Automation"
-        ],
-
-    "introduction":
-        "The report generation process encountered an issue.",
-
-    "methodology":
-        "Multi-agent RAG workflow involving retrieval, validation, analysis, and report generation.",
-
-    "dynamic_sections":
-        [],
-
-    "conclusion":
-        "The workflow partially executed but report generation failed.",
-
-    "references":
-        citations
-}
+    
+        return {
+        
+            "critical_error": True,
+    
+            "errors": [
+                str(e)
+            ],
+    
+            "workflow_complete": True,
+    
+            "next_agent": "FINISH"
+        }
 
     # --------------------------------
     # RETURN
