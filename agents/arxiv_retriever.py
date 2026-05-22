@@ -191,10 +191,12 @@ def arxiv_retriever_agent(state):
 
     vector_db = ingest_documents_to_vectorstore(
 
-        documents=documents,
+    documents=documents,
 
-        existing_vectorstore=vector_db
-    )
+    thread_id=state["thread_id"],
+
+    existing_vectorstore=vector_db
+)
 
     print(
         f"\nRetrieved Arxiv Docs: "

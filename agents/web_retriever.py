@@ -127,15 +127,17 @@ def web_retriever_agent(state):
     vector_db = state.get(
         "vector_db"
     )
-    print("Combined docs")
-    print(combined_docs)
+    # print("Combined docs")
+    # print(combined_docs)
 
     vector_db = ingest_documents_to_vectorstore(
 
-        documents=documents,
+    documents=documents,
 
-        existing_vectorstore=vector_db
-    )
+    thread_id=state["thread_id"],
+
+    existing_vectorstore=vector_db
+)
     print(
         f"\nRetrieved Web Docs: "
         f"{len(documents)}"

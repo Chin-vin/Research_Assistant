@@ -13,8 +13,9 @@ from rag.vectorstore import (
 def ingest_documents_to_vectorstore(
 
     documents,
-
-    existing_vectorstore=None
+    thread_id,
+    existing_vectorstore=None,
+    
 ):
 
     try:
@@ -91,7 +92,7 @@ def ingest_documents_to_vectorstore(
             return existing_vectorstore
 
         return create_vectorstore(
-            chunks
+            chunks,thread_id
         )
 
     except Exception as e:

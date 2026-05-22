@@ -4434,3 +4434,113 @@ groq.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached
 2026-05-22 18:03:46,860 - INFO - Running human_approval_agent
 2026-05-22 18:04:46,158 - INFO - Running reporting_agent
 2026-05-22 18:04:48,064 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-22 18:33:48,909 - INFO - Running decomposition_agent
+2026-05-22 18:33:49,552 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-22 18:33:49,577 - INFO - Running retrieval_router_agent
+2026-05-22 18:33:50,031 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-22 18:33:50,036 - INFO - Running web_retriever_agent
+2026-05-22 18:34:01,498 - INFO - Running pdf_retriever_agent
+2026-05-22 18:34:01,501 - INFO - Running analysis_agent
+2026-05-22 18:34:03,607 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-22 18:34:03,615 - INFO - Running validation_agent
+2026-05-22 18:34:04,529 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-22 18:34:04,539 - INFO - Running human_approval_agent
+2026-05-22 18:39:53,132 - INFO - Running decomposition_agent
+2026-05-22 18:39:53,573 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-22 18:39:53,598 - INFO - Running retrieval_router_agent
+2026-05-22 18:39:53,903 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-22 18:39:53,908 - INFO - Running web_retriever_agent
+2026-05-22 18:40:05,084 - ERROR - Traceback (most recent call last):
+  File "/home/vinitha.chincholi/Documents/research_system/utils/safe_execution.py", line 55, in safe_execute
+    result = agent_function(
+  File "/home/vinitha.chincholi/Documents/research_system/agents/web_retriever.py", line 137, in web_retriever_agent
+    thread_id=state["thread_id"],
+KeyError: 'thread_id'
+
+2026-05-22 18:40:05,087 - INFO - Running pdf_retriever_agent
+2026-05-22 18:40:05,089 - INFO - Running analysis_agent
+2026-05-22 18:40:06,945 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-22 18:40:06,953 - INFO - Running validation_agent
+2026-05-22 18:40:08,021 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-22 18:40:08,030 - INFO - Running human_approval_agent
+2026-05-22 18:40:34,849 - INFO - Running reporting_agent
+2026-05-22 18:40:36,751 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-22 18:41:07,275 - INFO - Running decomposition_agent
+2026-05-22 18:41:07,760 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-22 18:41:07,768 - INFO - Running retrieval_router_agent
+2026-05-22 18:41:07,930 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-22 18:41:07,938 - INFO - Running web_retriever_agent
+2026-05-22 18:41:07,942 - INFO - Running pdf_retriever_agent
+2026-05-22 18:41:08,266 - INFO - Running analysis_agent
+2026-05-22 18:41:10,309 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-22 18:41:10,313 - INFO - Running validation_agent
+2026-05-22 18:41:10,866 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-22 18:41:10,875 - INFO - Running human_approval_agent
+2026-05-22 18:43:17,766 - INFO - Running reporting_agent
+2026-05-22 18:43:19,500 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-22 18:51:59,684 - INFO - Running decomposition_agent
+2026-05-22 18:52:00,068 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-22 18:52:00,095 - INFO - Running retrieval_router_agent
+2026-05-22 18:52:00,261 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-22 18:52:00,270 - INFO - Running web_retriever_agent
+2026-05-22 18:52:12,290 - ERROR - Traceback (most recent call last):
+  File "/home/vinitha.chincholi/Documents/research_system/utils/safe_execution.py", line 55, in safe_execute
+    result = agent_function(
+  File "/home/vinitha.chincholi/Documents/research_system/agents/web_retriever.py", line 137, in web_retriever_agent
+    thread_id=state["thread_id"],
+KeyError: 'thread_id'
+
+2026-05-22 18:52:12,292 - INFO - Running pdf_retriever_agent
+2026-05-22 18:52:12,295 - INFO - Running analysis_agent
+2026-05-22 18:52:14,221 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-22 18:52:14,226 - INFO - Running validation_agent
+2026-05-22 18:52:14,908 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-22 18:52:14,915 - INFO - Running human_approval_agent
+2026-05-22 18:52:35,544 - INFO - Running human_intent_router_agent
+2026-05-22 18:52:35,786 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-22 18:52:35,793 - INFO - Running validation_agent
+2026-05-22 18:52:36,556 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-22 18:52:36,562 - INFO - Running human_approval_agent
+2026-05-22 18:52:39,023 - INFO - Running human_intent_router_agent
+2026-05-22 18:52:39,325 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-22 18:52:39,331 - INFO - Running validation_agent
+2026-05-22 18:52:40,078 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-22 18:52:40,087 - INFO - Running human_approval_agent
+2026-05-22 18:52:49,583 - INFO - Running reporting_agent
+2026-05-22 18:52:51,794 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-22 18:54:46,517 - INFO - Running decomposition_agent
+2026-05-22 18:54:46,906 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-22 18:54:46,932 - INFO - Running retrieval_router_agent
+2026-05-22 18:54:47,189 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-22 18:54:47,198 - INFO - Running web_retriever_agent
+2026-05-22 18:54:53,849 - ERROR - Traceback (most recent call last):
+  File "/home/vinitha.chincholi/Documents/research_system/utils/safe_execution.py", line 55, in safe_execute
+    result = agent_function(
+  File "/home/vinitha.chincholi/Documents/research_system/agents/web_retriever.py", line 137, in web_retriever_agent
+    thread_id=state["thread_id"],
+KeyError: 'thread_id'
+
+2026-05-22 18:54:53,852 - INFO - Running pdf_retriever_agent
+2026-05-22 18:54:53,854 - INFO - Running analysis_agent
+2026-05-22 18:54:55,871 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-22 18:54:55,879 - INFO - Running validation_agent
+2026-05-22 18:54:56,673 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-22 18:54:56,682 - INFO - Running human_approval_agent
+2026-05-22 18:57:36,606 - INFO - Running decomposition_agent
+2026-05-22 18:57:36,910 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-22 18:57:36,950 - INFO - Running retrieval_router_agent
+2026-05-22 18:57:37,205 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-22 18:57:37,211 - INFO - Running web_retriever_agent
+2026-05-22 18:57:43,948 - ERROR - Traceback (most recent call last):
+  File "/home/vinitha.chincholi/Documents/research_system/utils/safe_execution.py", line 55, in safe_execute
+    result = agent_function(
+  File "/home/vinitha.chincholi/Documents/research_system/agents/web_retriever.py", line 137, in web_retriever_agent
+    thread_id=state["thread_id"],
+KeyError: 'thread_id'
+
+2026-05-22 18:57:43,952 - INFO - Running pdf_retriever_agent
+2026-05-22 18:57:43,954 - INFO - Running analysis_agent
+2026-05-22 18:57:45,464 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-22 18:57:45,472 - INFO - Running validation_agent
+2026-05-22 18:57:46,275 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-22 18:57:46,284 - INFO - Running human_approval_agent

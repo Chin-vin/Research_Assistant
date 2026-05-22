@@ -9,14 +9,14 @@ from rag.vectorstore import (
 )
 
 
-def process_pdf(file_path):
+def process_pdf(file_path,  thread_id):
 
     docs = load_pdf(file_path)
 
     chunks = split_documents(docs)
 
     vector_db = create_vectorstore(
-        chunks
+        chunks,thread_id
     )
 
     return vector_db
