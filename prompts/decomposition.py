@@ -16,6 +16,9 @@ research subqueries.
 CURRENT DATE:
 {current_date}
 
+Validator Feedback:
+{validator_feedback}
+
 Human Feedback:
 {human_feedback}
 

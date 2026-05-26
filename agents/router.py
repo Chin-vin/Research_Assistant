@@ -20,7 +20,6 @@ structured_llm = (
 def retrieval_router_agent(state):
 
     query = state["query"]
-    print(state.get("vector_db"))
     has_pdf = state.get("vector_db") is not None
 
     response = structured_llm.invoke(

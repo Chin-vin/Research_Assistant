@@ -4,3 +4,8 @@ chroma_db/
 
 .cache/
 huggingface/
+
+
+__pycache__
+
+workflow.log

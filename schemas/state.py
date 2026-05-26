@@ -2,7 +2,7 @@ import operator
 from typing import Annotated, TypedDict, List, Dict, Any
 
 class AgentState(TypedDict):
-
+    thread_id :str
     query: str
 
     subqueries: List[str]
@@ -34,4 +34,5 @@ class AgentState(TypedDict):
     vector_db: Any
     routing: Dict[str, str]
     human_feedback: str
+    validator_feedback: str
     awaiting_human_approval: bool

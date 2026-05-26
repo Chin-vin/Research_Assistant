@@ -69,7 +69,6 @@ def web_retriever_agent(state):
                     []
                 )
         }
-
     print(
         f"\nRunning Web Retrieval "
         f"Mode: {mode}"
@@ -120,6 +119,7 @@ def web_retriever_agent(state):
     combined_docs = (
         existing_docs + documents
     )
+
     # --------------------------------
     # VECTOR INGESTION
     # --------------------------------
@@ -127,9 +127,6 @@ def web_retriever_agent(state):
     vector_db = state.get(
         "vector_db"
     )
-    # print("Combined docs")
-    # print(combined_docs)
-
     vector_db = ingest_documents_to_vectorstore(
 
     documents=documents,
@@ -141,8 +138,8 @@ def web_retriever_agent(state):
     print(
         f"\nRetrieved Web Docs: "
         f"{len(documents)}"
-    )
-
+    ) 
+    print(vector_db)
     return {
 
     "retrieved_docs":

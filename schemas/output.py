@@ -84,6 +84,7 @@ from pydantic import BaseModel, Field
 from typing import List
 
 
+from typing import Literal
 class DecompositionOutput(BaseModel):
 
     subqueries: List[str] = Field(
@@ -213,16 +214,22 @@ class ReportOutput(BaseModel):
     ] = Field(
         default_factory=list
     )
+
+
 class RoutingOutput(BaseModel):
 
-    retrieval_mode: str
+    retrieval_mode: Literal[
+    
+        "pdf_only",
+
+        "hybrid",
+
+        "web_only",
+
+        "arxiv_only"
+    ]
 
 
-from pydantic import (
-    BaseModel
-)
-
-from typing import Literal
 
 
 class HumanIntentOutput(

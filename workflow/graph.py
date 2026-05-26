@@ -172,6 +172,7 @@ builder.add_node(
             state
         )
 )
+
 # -----------------------------------
 # ENTRY POINT
 # -----------------------------------
@@ -295,15 +296,15 @@ builder.add_edge(
     "pdf_retriever"
 )
 
-builder.add_edge(
-    "pdf_retriever",
-    "arxiv_retriever"
-)
+# builder.add_edge(
+#     "pdf_retriever",
+#     "arxiv_retriever"
+# )
 
-builder.add_edge(
-    "arxiv_retriever",
-    "analyzer"
-)
+# builder.add_edge(
+#     "arxiv_retriever",
+#     "analyzer"
+# )
 
 builder.add_edge(
     "pdf_retriever",
@@ -339,6 +340,8 @@ builder.add_conditional_edges(
 
         "human_approval":
             "human_approval",
+        "analyzer":
+            "analyzer",
 
         "reporter":
             "reporter",

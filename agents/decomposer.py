@@ -1,3 +1,5 @@
+
+
 from prompts.decomposition import (
     DECOMPOSITION_PROMPT
 )
@@ -6,10 +8,10 @@ from models.llm_registry import (
     fast_llm
 )
 
+from schemas import state
 from schemas.output import (
     DecompositionOutput
 )
-
 
 structured_llm = (
     fast_llm.with_structured_output(
@@ -29,18 +31,18 @@ def decomposition_agent(state):
         ""
     )
 
-    # --------------------------------
-    # HUMAN FEEDBACK
-    # --------------------------------
+    validator_feedback = state.get(
+    "validator_feedback",
+    ""
+)
 
     human_feedback = state.get(
-        "human_feedback",
-        ""
-    )
+    "human_feedback",
+    ""
+)
     current_date = datetime.now().strftime(
     "%d-%m-%Y"
 )
-
     # --------------------------------
     # PROMPT
     # --------------------------------
@@ -49,6 +51,7 @@ def decomposition_agent(state):
 
         query=query,
 
+        validator_feedback=validator_feedback,
         human_feedback=human_feedback,
         current_date=current_date
     )
@@ -103,7 +106,7 @@ def decomposition_agent(state):
     cleaned_subqueries = (
         cleaned_subqueries[:6]
     )
-
+   
     print(
         f"\nGenerated Subqueries: "
         f"{len(cleaned_subqueries)}"
@@ -126,6 +129,6 @@ def decomposition_agent(state):
         "subqueries":
             cleaned_subqueries,
 
-        "next_agent":
-            "parallel_retrieval"
+        # "next_agent":
+        #     "parallel_retrieval"
     }

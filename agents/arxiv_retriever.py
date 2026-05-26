@@ -68,7 +68,6 @@ def arxiv_retriever_agent(state):
     # --------------------------------
     # ROUTING MODE
     # --------------------------------
-
     mode = state.get(
         "routing",
         {}
@@ -202,12 +201,10 @@ def arxiv_retriever_agent(state):
         f"\nRetrieved Arxiv Docs: "
         f"{len(documents)}"
     )
-
     return {
 
     "retrieved_docs":
         combined_docs,
-
     "vector_db":
         vector_db
 }

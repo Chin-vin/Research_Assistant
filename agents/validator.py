@@ -10,18 +10,16 @@ from schemas.output import (
     ValidationOutput
 )
 
-
 structured_llm = (
     validator_llm.with_structured_output(
         ValidationOutput
     )
 )
 
-MAX_RETRIES = 3
+MAX_RETRIES = 5
 
 
 def validation_agent(state):
-
     # --------------------------------
     # ANALYSIS
     # --------------------------------
@@ -47,16 +45,27 @@ def validation_agent(state):
     )
 
     validation = response.model_dump()
+
     issues = validation.get(
-    "issues",
-    {}
-)
+        "issues",
+        {}
+    )
 
     refinement = validation.get(
         "refinement",
         {}
     )
 
+    weak_sections = issues.get(
+        "weak_sections",
+        []
+    )
+
+    missing_sections = issues.get(
+        "missing_information",
+        []
+    )
+    
     print("\n========== VALIDATION ==========\n")
 
     print(
@@ -68,18 +77,20 @@ def validation_agent(state):
         f"Research Sufficient: "
         f"{validation.get('research_sufficient', False)}"
     )
-
+    
     # --------------------------------
     # RETRY COUNT
     # --------------------------------
 
-    retry_count = len(
-        state.get(
-            "errors",
-            []
-        )
+    retries = state.get(
+    "retries",
+    {}
+)
+    
+    retry_count = retries.get(
+        "validator",
+        0
     )
-
     # --------------------------------
     # STOP INFINITE RETRIES
     # --------------------------------
@@ -94,6 +105,10 @@ def validation_agent(state):
 
             "validation":
                 validation,
+            "vector_db":
+        state.get(
+            "vector_db"
+        ),
 
             "next_agent":
                 "reporter"
@@ -122,23 +137,71 @@ def validation_agent(state):
     "refinement_focus",
     []
 )
+    # =================================
+    # DETERMINE REAL RESEARCH QUALITY
+    # =================================
 
-    
-    # --------------------------------
+    has_missing_sections = (
+        len(missing_sections) > 0
+    )
+
+    has_weak_sections = (
+        len(weak_sections) > 0
+    )
+
+    requires_refinement = (
+
+        needs_refinement
+
+        or has_missing_sections
+
+        or has_weak_sections
+    )
+    # =================================
+    # FORCE REFINEMENT IF NEEDED
+    # =================================
+    # print(missing_sections)
+    if requires_refinement:
+
+        print(
+            "\nValidator requested refinement."
+        )
+    # =================================
     # SUCCESS CASE
-    # --------------------------------
+    # =================================
 
-    if research_sufficient:
+    if (
+
+        research_sufficient
+
+        and not requires_refinement
+
+    ):
 
         return {
 
             "validation":
                 validation,
 
+            "validator_feedback":
+                state.get(
+                    "validator_feedback",
+                    ""
+                ),
+
+            "human_feedback":
+                state.get(
+                    "human_feedback",
+                    ""
+                ),
+                "vector_db":
+        state.get(
+            "vector_db"
+        ),
+
             "next_agent":
                 "human_approval"
         }
-
     # --------------------------------
     # BUILD FEEDBACK
     # --------------------------------
@@ -186,10 +249,10 @@ def validation_agent(state):
             + ", ".join(missing_sections)
         )
 
-    human_feedback = "\n".join(
+    validator_feedback = "\n".join(
         feedback_parts
     )
-
+  
     # --------------------------------
     # UPDATE ERRORS
     # --------------------------------
@@ -203,6 +266,9 @@ def validation_agent(state):
         f"Validation refinement: "
         f"{refinement_type}"
     )
+    retries["validator"] = (
+    retry_count + 1
+)
 
     # --------------------------------
     # RETRIEVAL REFINEMENT
@@ -217,18 +283,31 @@ def validation_agent(state):
 
         return {
 
-            "validation":
-                validation,
+        "validation":
+            validation,
 
-            "human_feedback":
-                human_feedback,
+        "validator_feedback":
+            validator_feedback,
 
-            "errors":
-                errors,
+        "human_feedback":
+            state.get(
+                "human_feedback",
+                ""
+            ),
 
-            "next_agent":
-                "parallel_retrieval"
-        }
+        "errors":
+            errors,
+        "retries":
+        retries,
+        "vector_db":
+        state.get(
+            "vector_db"
+        ),
+
+
+        "next_agent":
+            "decomposer"
+    }
 
     # --------------------------------
     # ANALYSIS REFINEMENT
@@ -238,18 +317,31 @@ def validation_agent(state):
         "\nValidator requested "
         "analysis refinement."
     )
-
     return {
 
-        "validation":
-            validation,
+    "validation":
+        validation,
 
-        "human_feedback":
-            human_feedback,
+    "validator_feedback":
+        validator_feedback,
 
-        "errors":
-            errors,
+    "human_feedback":
+        state.get(
+            "human_feedback",
+            ""
+        ),
+    "vector_db":
+        state.get(
+            "vector_db"
+        ),
 
-        "next_agent":
-            "analyzer"
-    }
+    "errors":
+        errors,
+
+    "retries":
+        retries,
+
+
+    "next_agent":
+        "analyzer"
+}

@@ -4,15 +4,23 @@ from datetime import datetime
 from prompts.analysis import (
     ANALYSIS_PROMPT
 )
-from rag.semantic_search import (
-    semantic_search
+from rag.retriever import (
+    retrieve_documents
 )
 from models.llm_registry import (
     reasoning_llm
 )
+import traceback
 
+from schemas import state
 from schemas.output import (
     AnalysisOutput
+)
+from utils.context_manager import (
+    build_context
+)
+from rag.vectorstore import (
+    load_vectorstore
 )
 
 
@@ -29,91 +37,35 @@ def analysis_agent(state):
     # RETRIEVED DOCS
     # --------------------------------
 
-    vector_db = state.get(
-        "vector_db"
-    )
+    vector_db = load_vectorstore(
+    state["thread_id"]
+)
 
     retrieved_docs = []
 
     if vector_db:
 
-        try:
+        retrieved_docs = retrieve_documents(
 
-            semantic_results = semantic_search(
+            vector_db=vector_db,
 
-                vector_db=vector_db,
+            query=state["query"],
 
-                query=state["query"],
+            k=15,
 
-                k=15
-            )
-
-            for doc in semantic_results:
-
-                retrieved_docs.append({
-
-                    "title":
-                        doc.metadata.get(
-                            "title",
-                            ""
-                        ),
-
-                    "content":
-                        doc.page_content,
-
-                    "url":
-                        doc.metadata.get(
-                            "url",
-                            ""
-                        ),
-
-                    "source":
-                        doc.metadata.get(
-                            "source",
-                            ""
-                        ),
-
-                    "page":
-                        doc.metadata.get(
-                            "page",
-                            ""
-                        )
-                })
-
-        except Exception as e:
-
-            print(
-                f"\nSemantic Retrieval Error: "
-                f"{str(e)}"
-            )
+            rerank_top_k=8
+        )
 
     # --------------------------------
     # DIRECT CONTEXT BUILD
     # --------------------------------
-
-    context = "\n\n".join([
-
-    f"""
-SOURCE ID: {idx + 1}
-
-TITLE:
-{doc.get('title', 'No Title')}
-
-URL:
-{doc.get('url', 'No URL')}
-
-CONTENT:
-{doc.get('content', '')}
-"""
-    for idx, doc in enumerate(retrieved_docs)
-])
-
-    # print(
-    #     f"\nContext Length: "
-    #     f"{len(context)}"
-    # )
-    # print("Context")
-    # print(context)
+    context = build_context(
+    retrieved_docs
+    )
+    validator_feedback = state.get(
+    "validator_feedback",
+    ""
+)
 
     human_feedback = state.get(
     "human_feedback",
@@ -123,7 +75,7 @@ CONTENT:
     current_date = datetime.now().strftime(
     "%d-%m-%Y"
 )
-
+    
     # --------------------------------
     # ANALYSIS PROMPT
     # --------------------------------
@@ -133,6 +85,9 @@ CONTENT:
     current_date=current_date,
 
     query=state["query"],
+
+    validator_feedback=
+        validator_feedback,
 
     documents=context,
 
@@ -158,6 +113,8 @@ CONTENT:
             )
 
         analysis = response.model_dump()
+     
+     
 
     except Exception as e:
 
@@ -168,11 +125,12 @@ CONTENT:
         raise Exception(
             f"Analysis generation failed: {str(e)}"
         )
-    # print("Final Analysis")
-    # print(analysis)
     return {
 
         "analysis": analysis,
-
-        "next_agent": "validator"
+        # "vector_db":
+        # state.get(
+        #     "vector_db"
+        # )
+        # "next_agent": "validator"
     }

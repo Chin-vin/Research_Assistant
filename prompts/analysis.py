@@ -93,9 +93,22 @@ RESEARCH QUERY:
 RESEARCH DATA:
 {documents}
 
-HUMAN FEEDBACK:
-{human_feedback}
+IMPORTANT CITATION RULES:
 
+1. ONLY use URLs explicitly present in EXACT_URL fields.
+2. NEVER invent URLs.
+3. NEVER modify URLs.
+4. NEVER shorten URLs.
+5. NEVER generate fake or placeholder links.
+6. Every citation MUST exactly match an EXACT_URL value from RESEARCH DATA.
+7. If no valid supporting URL exists, return empty citations array.
+8. Preserve citation-source correctness strictly.
+
+Validator Feedback:
+{validator_feedback}
+
+Human Feedback:
+{human_feedback}
 Generate analysis using EXACTLY
 these fields:
 
@@ -140,10 +153,8 @@ Each dynamic section MUST contain:
 - content
 - citations
 
-Citations must contain:
-- source URLs
-- supporting references
-- evidence sources
+Citations must ONLY contain EXACT_URL values
+provided in RESEARCH DATA.
 
 Example:
 
@@ -178,6 +189,9 @@ DO NOT GENERATE:
 - research_gaps
 - technical_insights
 - comparisons
+
+Ground every claim strictly in retrieved evidence.
+Do not hallucinate references or citations.
 
 Generate comprehensive,
 publication-quality analysis.

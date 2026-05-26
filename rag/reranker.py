@@ -1,7 +1,3 @@
-from sentence_transformers import (
-    CrossEncoder
-)
-
 from core.singletons import (
     get_reranker
 )
@@ -19,7 +15,10 @@ def rerank_documents(
 
     pairs = [
 
-        (query, doc.page_content)
+        (query, doc.get(
+    "content",
+    ""
+))
 
         for doc in documents
     ]

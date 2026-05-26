@@ -98,5 +98,6 @@ def get_reasoning_llm():
 
         model="llama-3.3-70b-versatile",
 
-        temperature=0
+        temperature=0,
+        streaming = True
     )
