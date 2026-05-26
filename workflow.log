@@ -9340,3 +9340,1476 @@ KeyError: 'thread_id'
 2026-05-26 12:01:00,241 - INFO - Running validation_agent
 2026-05-26 12:01:01,147 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
 2026-05-26 12:01:01,154 - INFO - Running human_approval_agent
+2026-05-26 12:13:39,727 - INFO - Running decomposition_agent
+2026-05-26 12:13:40,386 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 12:13:40,412 - INFO - Running retrieval_router_agent
+2026-05-26 12:13:40,722 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 12:13:40,727 - INFO - Running web_retriever_agent
+2026-05-26 12:13:53,673 - INFO - Running pdf_retriever_agent
+2026-05-26 12:13:53,675 - INFO - Running analysis_agent
+2026-05-26 12:13:55,632 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 12:13:58,718 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 12:13:58,726 - INFO - Running validation_agent
+2026-05-26 12:13:59,479 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 12:13:59,485 - INFO - Running analysis_agent
+2026-05-26 12:14:01,867 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 12:14:05,931 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 12:14:05,939 - INFO - Running validation_agent
+2026-05-26 12:14:06,769 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 12:14:06,775 - INFO - Running analysis_agent
+2026-05-26 12:14:08,895 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 12:14:08,895 - INFO - Retrying request to /openai/v1/chat/completions in 2.000000 seconds
+2026-05-26 12:14:11,237 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 12:14:12,940 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 12:14:12,940 - INFO - Retrying request to /openai/v1/chat/completions in 8.000000 seconds
+2026-05-26 12:14:22,274 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 12:14:22,282 - INFO - Running validation_agent
+2026-05-26 12:14:22,372 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 12:14:22,373 - INFO - Retrying request to /openai/v1/chat/completions in 8.000000 seconds
+2026-05-26 12:14:30,470 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 12:14:30,471 - INFO - Retrying request to /openai/v1/chat/completions in 1.000000 seconds
+2026-05-26 12:14:31,504 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 12:14:31,547 - ERROR - Traceback (most recent call last):
+  File "/home/vinitha.chincholi/Documents/research_system/utils/safe_execution.py", line 98, in safe_execute
+    result = agent_function(
+  File "/home/vinitha.chincholi/Documents/research_system/agents/validator.py", line 43, in validation_agent
+    response = structured_llm.invoke(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 3333, in invoke
+    input_ = context.run(step.invoke, input_, config, **kwargs)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 5881, in invoke
+    return self.bound.invoke(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 474, in invoke
+    self.generate_prompt(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1823, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1630, in generate
+    self._generate_with_cache(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1970, in _generate_with_cache
+    result = self._generate(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_groq/chat_models.py", line 621, in _generate
+    response = self.client.create(messages=message_dicts, **params)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/resources/chat/completions.py", line 461, in create
+    return self._post(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/_base_client.py", line 1242, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/_base_client.py", line 1044, in request
+    raise self._make_status_error_from_response(err.response) from None
+groq.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krrkqvtxeher06ew6cyg9rdh` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 10142, Requested 2082. Please try again in 1.12s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+
+2026-05-26 12:14:31,547 - WARNING - validation_agent failed | Retry: 1
+2026-05-26 12:14:32,297 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 12:26:44,489 - INFO - Running decomposition_agent
+2026-05-26 12:26:44,950 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 12:26:45,277 - INFO - Running retrieval_router_agent
+2026-05-26 12:26:45,451 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 12:26:45,458 - INFO - Running web_retriever_agent
+2026-05-26 12:27:06,598 - INFO - Running pdf_retriever_agent
+2026-05-26 12:27:06,601 - INFO - Running analysis_agent
+2026-05-26 12:27:08,252 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 12:27:10,861 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 12:27:10,869 - INFO - Running validation_agent
+2026-05-26 12:27:11,807 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 12:27:11,813 - INFO - Running analysis_agent
+2026-05-26 12:27:12,542 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 12:27:14,984 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 12:27:14,993 - INFO - Running validation_agent
+2026-05-26 12:27:15,038 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 12:27:15,043 - ERROR - Traceback (most recent call last):
+  File "/home/vinitha.chincholi/Documents/research_system/utils/safe_execution.py", line 98, in safe_execute
+    result = agent_function(
+  File "/home/vinitha.chincholi/Documents/research_system/agents/validator.py", line 43, in validation_agent
+    response = structured_llm.invoke(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 3333, in invoke
+    input_ = context.run(step.invoke, input_, config, **kwargs)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 5881, in invoke
+    return self.bound.invoke(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 474, in invoke
+    self.generate_prompt(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1823, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1630, in generate
+    self._generate_with_cache(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1970, in _generate_with_cache
+    result = self._generate(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_groq/chat_models.py", line 621, in _generate
+    response = self.client.create(messages=message_dicts, **params)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/resources/chat/completions.py", line 461, in create
+    return self._post(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/_base_client.py", line 1242, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/_base_client.py", line 1044, in request
+    raise self._make_status_error_from_response(err.response) from None
+groq.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krrkqvtxeher06ew6cyg9rdh` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99260, Requested 1873. Please try again in 16m18.912s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+
+2026-05-26 12:27:15,044 - WARNING - validation_agent failed | Retry: 1
+2026-05-26 12:27:15,087 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 12:27:16,132 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 12:44:10,872 - INFO - Running decomposition_agent
+2026-05-26 12:44:11,319 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 12:44:11,349 - INFO - Running retrieval_router_agent
+2026-05-26 12:44:11,639 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 12:44:11,645 - INFO - Running web_retriever_agent
+2026-05-26 12:44:26,737 - INFO - Running pdf_retriever_agent
+2026-05-26 12:44:26,740 - INFO - Running analysis_agent
+2026-05-26 12:44:30,385 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 12:44:30,443 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 12:44:30,447 - ERROR - Traceback (most recent call last):
+  File "/home/vinitha.chincholi/Documents/research_system/agents/analyzer.py", line 105, in analysis_agent
+    response = structured_llm.invoke(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 3333, in invoke
+    input_ = context.run(step.invoke, input_, config, **kwargs)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 5881, in invoke
+    return self.bound.invoke(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 474, in invoke
+    self.generate_prompt(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1823, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1630, in generate
+    self._generate_with_cache(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1927, in _generate_with_cache
+    for chunk in self._stream(messages, stop=stop, **kwargs):
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_groq/chat_models.py", line 657, in _stream
+    for chunk in self.client.create(messages=message_dicts, **params):
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/resources/chat/completions.py", line 461, in create
+    return self._post(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/_base_client.py", line 1242, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/_base_client.py", line 1044, in request
+    raise self._make_status_error_from_response(err.response) from None
+groq.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krrkqvtxeher06ew6cyg9rdh` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99251, Requested 2250. Please try again in 21m36.864s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/vinitha.chincholi/Documents/research_system/utils/safe_execution.py", line 98, in safe_execute
+    result = agent_function(
+  File "/home/vinitha.chincholi/Documents/research_system/agents/analyzer.py", line 125, in analysis_agent
+    raise Exception(
+Exception: Analysis generation failed: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krrkqvtxeher06ew6cyg9rdh` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99251, Requested 2250. Please try again in 21m36.864s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+
+2026-05-26 12:44:30,447 - WARNING - analysis_agent failed | Retry: 1
+2026-05-26 12:44:30,447 - ERROR - Unhandled Error: Exception
+2026-05-26 12:44:30,450 - INFO - Running validation_agent
+2026-05-26 12:44:30,517 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 12:44:30,520 - ERROR - Traceback (most recent call last):
+  File "/home/vinitha.chincholi/Documents/research_system/utils/safe_execution.py", line 98, in safe_execute
+    result = agent_function(
+  File "/home/vinitha.chincholi/Documents/research_system/agents/validator.py", line 43, in validation_agent
+    response = structured_llm.invoke(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 3333, in invoke
+    input_ = context.run(step.invoke, input_, config, **kwargs)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 5881, in invoke
+    return self.bound.invoke(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 474, in invoke
+    self.generate_prompt(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1823, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1630, in generate
+    self._generate_with_cache(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1970, in _generate_with_cache
+    result = self._generate(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_groq/chat_models.py", line 621, in _generate
+    response = self.client.create(messages=message_dicts, **params)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/resources/chat/completions.py", line 461, in create
+    return self._post(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/_base_client.py", line 1242, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/_base_client.py", line 1044, in request
+    raise self._make_status_error_from_response(err.response) from None
+groq.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krrkqvtxeher06ew6cyg9rdh` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99251, Requested 826. Please try again in 1m6.527999999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+
+2026-05-26 12:44:30,520 - WARNING - validation_agent failed | Retry: 1
+2026-05-26 12:44:30,565 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 12:44:31,612 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 12:48:37,720 - INFO - Running decomposition_agent
+2026-05-26 12:48:38,176 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 12:48:38,211 - INFO - Running retrieval_router_agent
+2026-05-26 12:48:38,249 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 12:48:38,254 - ERROR - Traceback (most recent call last):
+  File "/home/vinitha.chincholi/Documents/research_system/utils/safe_execution.py", line 98, in safe_execute
+    result = agent_function(
+  File "/home/vinitha.chincholi/Documents/research_system/agents/router.py", line 25, in retrieval_router_agent
+    response = structured_llm.invoke(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 3333, in invoke
+    input_ = context.run(step.invoke, input_, config, **kwargs)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 5881, in invoke
+    return self.bound.invoke(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 474, in invoke
+    self.generate_prompt(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1823, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1630, in generate
+    self._generate_with_cache(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1970, in _generate_with_cache
+    result = self._generate(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_groq/chat_models.py", line 621, in _generate
+    response = self.client.create(messages=message_dicts, **params)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/resources/chat/completions.py", line 461, in create
+    return self._post(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/_base_client.py", line 1242, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/_base_client.py", line 1044, in request
+    raise self._make_status_error_from_response(err.response) from None
+groq.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krrkqvtxeher06ew6cyg9rdh` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99680, Requested 504. Please try again in 2m38.976s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+
+2026-05-26 12:48:38,257 - WARNING - retrieval_router_agent failed | Retry: 1
+2026-05-26 12:48:38,291 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 12:48:39,329 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 12:50:46,374 - INFO - Running decomposition_agent
+2026-05-26 12:50:46,502 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 12:50:46,508 - ERROR - Traceback (most recent call last):
+  File "/home/vinitha.chincholi/Documents/research_system/utils/safe_execution.py", line 98, in safe_execute
+    result = agent_function(
+  File "/home/vinitha.chincholi/Documents/research_system/agents/decomposer.py", line 63, in decomposition_agent
+    response = structured_llm.invoke(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 3333, in invoke
+    input_ = context.run(step.invoke, input_, config, **kwargs)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 5881, in invoke
+    return self.bound.invoke(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 474, in invoke
+    self.generate_prompt(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1823, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1630, in generate
+    self._generate_with_cache(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1970, in _generate_with_cache
+    result = self._generate(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_groq/chat_models.py", line 621, in _generate
+    response = self.client.create(messages=message_dicts, **params)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/resources/chat/completions.py", line 461, in create
+    return self._post(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/_base_client.py", line 1242, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/_base_client.py", line 1044, in request
+    raise self._make_status_error_from_response(err.response) from None
+groq.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krrkqvtxeher06ew6cyg9rdh` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99532, Requested 673. Please try again in 2m57.12s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+
+2026-05-26 12:50:46,508 - WARNING - decomposition_agent failed | Retry: 1
+2026-05-26 12:50:46,544 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 12:50:47,584 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 12:52:07,223 - INFO - Running decomposition_agent
+2026-05-26 12:52:07,346 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 12:52:07,352 - ERROR - Traceback (most recent call last):
+  File "/home/vinitha.chincholi/Documents/research_system/utils/safe_execution.py", line 98, in safe_execute
+    result = agent_function(
+  File "/home/vinitha.chincholi/Documents/research_system/agents/decomposer.py", line 207, in decomposition_agent
+    response = structured_llm.invoke(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 3333, in invoke
+    input_ = context.run(step.invoke, input_, config, **kwargs)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 5881, in invoke
+    return self.bound.invoke(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 474, in invoke
+    self.generate_prompt(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1823, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1630, in generate
+    self._generate_with_cache(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1970, in _generate_with_cache
+    result = self._generate(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_groq/chat_models.py", line 621, in _generate
+    response = self.client.create(messages=message_dicts, **params)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/resources/chat/completions.py", line 461, in create
+    return self._post(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/_base_client.py", line 1242, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/_base_client.py", line 1044, in request
+    raise self._make_status_error_from_response(err.response) from None
+groq.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krrkqvtxeher06ew6cyg9rdh` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99438, Requested 670. Please try again in 1m33.312s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+
+2026-05-26 12:52:07,352 - WARNING - decomposition_agent failed | Retry: 1
+2026-05-26 12:52:07,391 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 12:52:08,431 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 12:58:25,605 - INFO - Running decomposition_agent
+2026-05-26 12:58:26,530 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 12:58:26,571 - INFO - Running retrieval_router_agent
+2026-05-26 12:58:26,622 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 12:58:26,627 - ERROR - Traceback (most recent call last):
+  File "/home/vinitha.chincholi/Documents/research_system/utils/safe_execution.py", line 98, in safe_execute
+    result = agent_function(
+  File "/home/vinitha.chincholi/Documents/research_system/agents/router.py", line 31, in retrieval_router_agent
+    response = structured_llm.invoke(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 3333, in invoke
+    input_ = context.run(step.invoke, input_, config, **kwargs)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 5881, in invoke
+    return self.bound.invoke(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 474, in invoke
+    self.generate_prompt(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1823, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1630, in generate
+    self._generate_with_cache(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1970, in _generate_with_cache
+    result = self._generate(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_groq/chat_models.py", line 621, in _generate
+    response = self.client.create(messages=message_dicts, **params)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/resources/chat/completions.py", line 461, in create
+    return self._post(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/_base_client.py", line 1242, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/_base_client.py", line 1044, in request
+    raise self._make_status_error_from_response(err.response) from None
+groq.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krrkqvtxeher06ew6cyg9rdh` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99702, Requested 457. Please try again in 2m17.376s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+
+2026-05-26 12:58:26,627 - WARNING - retrieval_router_agent failed | Retry: 1
+2026-05-26 12:58:26,677 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 12:58:28,213 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 13:18:49,413 - INFO - Running decomposition_agent
+2026-05-26 13:18:49,777 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 13:18:49,810 - INFO - Running retrieval_router_agent
+2026-05-26 13:18:50,093 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 13:18:50,100 - INFO - Running web_retriever_agent
+2026-05-26 13:19:05,256 - INFO - Running pdf_retriever_agent
+2026-05-26 13:19:05,259 - INFO - Running analysis_agent
+2026-05-26 13:19:06,940 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 13:19:06,977 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 13:19:06,980 - ERROR - Traceback (most recent call last):
+  File "/home/vinitha.chincholi/Documents/research_system/utils/safe_execution.py", line 152, in safe_execute
+    result = agent_function(
+  File "/home/vinitha.chincholi/Documents/research_system/agents/analyzer.py", line 105, in analysis_agent
+    response = structured_llm.invoke(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 3333, in invoke
+    input_ = context.run(step.invoke, input_, config, **kwargs)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 5881, in invoke
+    return self.bound.invoke(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 474, in invoke
+    self.generate_prompt(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1823, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1630, in generate
+    self._generate_with_cache(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1927, in _generate_with_cache
+    for chunk in self._stream(messages, stop=stop, **kwargs):
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_groq/chat_models.py", line 657, in _stream
+    for chunk in self.client.create(messages=message_dicts, **params):
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/resources/chat/completions.py", line 461, in create
+    return self._post(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/_base_client.py", line 1242, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/_base_client.py", line 1044, in request
+    raise self._make_status_error_from_response(err.response) from None
+groq.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krrkqvtxeher06ew6cyg9rdh` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99442, Requested 2296. Please try again in 25m1.632s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+
+2026-05-26 13:19:06,980 - WARNING - analysis_agent failed | Retry: 1
+2026-05-26 13:19:08,066 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 13:19:08,102 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 13:19:10,156 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 13:19:10,192 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 13:19:10,211 - INFO - Running validation_agent
+2026-05-26 13:19:10,305 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 13:19:10,308 - ERROR - Traceback (most recent call last):
+  File "/home/vinitha.chincholi/Documents/research_system/utils/safe_execution.py", line 152, in safe_execute
+    result = agent_function(
+  File "/home/vinitha.chincholi/Documents/research_system/agents/validator.py", line 43, in validation_agent
+    response = structured_llm.invoke(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 3333, in invoke
+    input_ = context.run(step.invoke, input_, config, **kwargs)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 5881, in invoke
+    return self.bound.invoke(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 474, in invoke
+    self.generate_prompt(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1823, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1630, in generate
+    self._generate_with_cache(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1970, in _generate_with_cache
+    result = self._generate(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_groq/chat_models.py", line 621, in _generate
+    response = self.client.create(messages=message_dicts, **params)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/resources/chat/completions.py", line 461, in create
+    return self._post(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/_base_client.py", line 1242, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/_base_client.py", line 1044, in request
+    raise self._make_status_error_from_response(err.response) from None
+groq.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krrkqvtxeher06ew6cyg9rdh` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99438, Requested 826. Please try again in 3m48.096s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+
+2026-05-26 13:19:10,308 - WARNING - validation_agent failed | Retry: 1
+2026-05-26 13:19:10,359 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 13:19:11,412 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 14:31:31,812 - INFO - Running decomposition_agent
+2026-05-26 14:31:32,197 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 14:31:32,205 - INFO - Running retrieval_router_agent
+2026-05-26 14:31:32,381 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 14:31:32,396 - INFO - Running web_retriever_agent
+2026-05-26 14:31:50,150 - INFO - Running pdf_retriever_agent
+2026-05-26 14:31:50,154 - INFO - Running analysis_agent
+2026-05-26 14:31:52,099 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 14:31:54,834 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 14:31:54,846 - INFO - Running validation_agent
+2026-05-26 14:31:54,916 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 14:31:54,919 - ERROR - Traceback (most recent call last):
+  File "/home/vinitha.chincholi/Documents/research_system/utils/safe_execution.py", line 152, in safe_execute
+    result = agent_function(
+  File "/home/vinitha.chincholi/Documents/research_system/agents/validator.py", line 43, in validation_agent
+    response = structured_llm.invoke(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 3333, in invoke
+    input_ = context.run(step.invoke, input_, config, **kwargs)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 5881, in invoke
+    return self.bound.invoke(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 474, in invoke
+    self.generate_prompt(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1823, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1630, in generate
+    self._generate_with_cache(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1970, in _generate_with_cache
+    result = self._generate(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_groq/chat_models.py", line 621, in _generate
+    response = self.client.create(messages=message_dicts, **params)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/resources/chat/completions.py", line 461, in create
+    return self._post(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/_base_client.py", line 1242, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/_base_client.py", line 1044, in request
+    raise self._make_status_error_from_response(err.response) from None
+groq.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krrkqvtxeher06ew6cyg9rdh` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99604, Requested 1368. Please try again in 13m59.808s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+
+2026-05-26 14:31:54,919 - WARNING - validation_agent failed | Retry: 1
+2026-05-26 14:31:54,961 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 14:31:56,011 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 14:53:15,245 - INFO - Running decomposition_agent
+2026-05-26 14:53:15,876 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 14:53:15,905 - INFO - Running retrieval_router_agent
+2026-05-26 14:53:16,348 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 14:53:16,355 - INFO - Running web_retriever_agent
+2026-05-26 14:53:32,272 - INFO - Running pdf_retriever_agent
+2026-05-26 14:53:32,275 - INFO - Running analysis_agent
+2026-05-26 14:53:35,844 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 14:53:35,932 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 14:53:35,957 - ERROR - Traceback (most recent call last):
+  File "/home/vinitha.chincholi/Documents/research_system/utils/safe_execution.py", line 153, in safe_execute
+    result = agent_function(
+  File "/home/vinitha.chincholi/Documents/research_system/agents/analyzer.py", line 105, in analysis_agent
+    response = structured_llm.invoke(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 3333, in invoke
+    input_ = context.run(step.invoke, input_, config, **kwargs)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 5881, in invoke
+    return self.bound.invoke(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 474, in invoke
+    self.generate_prompt(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1823, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1630, in generate
+    self._generate_with_cache(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1927, in _generate_with_cache
+    for chunk in self._stream(messages, stop=stop, **kwargs):
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_groq/chat_models.py", line 657, in _stream
+    for chunk in self.client.create(messages=message_dicts, **params):
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/resources/chat/completions.py", line 461, in create
+    return self._post(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/_base_client.py", line 1242, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/_base_client.py", line 1044, in request
+    raise self._make_status_error_from_response(err.response) from None
+groq.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krrkqvtxeher06ew6cyg9rdh` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99289, Requested 2231. Please try again in 21m53.28s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+
+2026-05-26 14:53:35,957 - WARNING - analysis_agent failed | Retry: 1
+2026-05-26 14:53:35,958 - ERROR - Daily token quota exhausted
+2026-05-26 14:53:35,960 - INFO - Running validation_agent
+2026-05-26 14:53:36,046 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 14:53:36,055 - ERROR - Traceback (most recent call last):
+  File "/home/vinitha.chincholi/Documents/research_system/utils/safe_execution.py", line 153, in safe_execute
+    result = agent_function(
+  File "/home/vinitha.chincholi/Documents/research_system/agents/validator.py", line 43, in validation_agent
+    response = structured_llm.invoke(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 3333, in invoke
+    input_ = context.run(step.invoke, input_, config, **kwargs)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 5881, in invoke
+    return self.bound.invoke(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 474, in invoke
+    self.generate_prompt(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1823, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1630, in generate
+    self._generate_with_cache(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1970, in _generate_with_cache
+    result = self._generate(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_groq/chat_models.py", line 621, in _generate
+    response = self.client.create(messages=message_dicts, **params)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/resources/chat/completions.py", line 461, in create
+    return self._post(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/_base_client.py", line 1242, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/_base_client.py", line 1044, in request
+    raise self._make_status_error_from_response(err.response) from None
+groq.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krrkqvtxeher06ew6cyg9rdh` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99289, Requested 842. Please try again in 1m53.184s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+
+2026-05-26 14:53:36,055 - WARNING - validation_agent failed | Retry: 1
+2026-05-26 14:53:36,055 - ERROR - Daily token quota exhausted
+2026-05-26 15:08:41,791 - INFO - Running decomposition_agent
+2026-05-26 15:08:42,236 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 15:08:42,275 - INFO - Running retrieval_router_agent
+2026-05-26 15:08:42,435 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 15:08:42,442 - INFO - Running web_retriever_agent
+2026-05-26 15:08:57,953 - INFO - Running pdf_retriever_agent
+2026-05-26 15:08:57,956 - INFO - Running analysis_agent
+2026-05-26 15:09:00,562 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 15:09:00,603 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 15:09:00,607 - ERROR - Traceback (most recent call last):
+  File "/home/vinitha.chincholi/Documents/research_system/utils/safe_execution.py", line 153, in safe_execute
+    result = agent_function(
+  File "/home/vinitha.chincholi/Documents/research_system/agents/analyzer.py", line 105, in analysis_agent
+    response = structured_llm.invoke(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 3333, in invoke
+    input_ = context.run(step.invoke, input_, config, **kwargs)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 5881, in invoke
+    return self.bound.invoke(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 474, in invoke
+    self.generate_prompt(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1823, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1630, in generate
+    self._generate_with_cache(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1927, in _generate_with_cache
+    for chunk in self._stream(messages, stop=stop, **kwargs):
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_groq/chat_models.py", line 657, in _stream
+    for chunk in self.client.create(messages=message_dicts, **params):
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/resources/chat/completions.py", line 461, in create
+    return self._post(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/_base_client.py", line 1242, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/_base_client.py", line 1044, in request
+    raise self._make_status_error_from_response(err.response) from None
+groq.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krrkqvtxeher06ew6cyg9rdh` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99391, Requested 2215. Please try again in 23m7.584s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+
+2026-05-26 15:09:00,607 - WARNING - analysis_agent failed | Retry: 1
+2026-05-26 15:09:00,608 - ERROR - Daily token quota exhausted
+2026-05-26 15:09:00,610 - INFO - Running validation_agent
+2026-05-26 15:09:00,760 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 15:09:00,764 - ERROR - Traceback (most recent call last):
+  File "/home/vinitha.chincholi/Documents/research_system/utils/safe_execution.py", line 153, in safe_execute
+    result = agent_function(
+  File "/home/vinitha.chincholi/Documents/research_system/agents/validator.py", line 43, in validation_agent
+    response = structured_llm.invoke(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 3333, in invoke
+    input_ = context.run(step.invoke, input_, config, **kwargs)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 5881, in invoke
+    return self.bound.invoke(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 474, in invoke
+    self.generate_prompt(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1823, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1630, in generate
+    self._generate_with_cache(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1970, in _generate_with_cache
+    result = self._generate(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_groq/chat_models.py", line 621, in _generate
+    response = self.client.create(messages=message_dicts, **params)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/resources/chat/completions.py", line 461, in create
+    return self._post(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/_base_client.py", line 1242, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/_base_client.py", line 1044, in request
+    raise self._make_status_error_from_response(err.response) from None
+groq.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krrkqvtxeher06ew6cyg9rdh` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99391, Requested 826. Please try again in 3m7.488s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+
+2026-05-26 15:09:00,765 - WARNING - validation_agent failed | Retry: 1
+2026-05-26 15:09:00,765 - ERROR - Daily token quota exhausted
+2026-05-26 15:23:55,239 - INFO - Running decomposition_agent
+2026-05-26 15:23:55,635 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 15:23:55,687 - INFO - Running retrieval_router_agent
+2026-05-26 15:23:55,960 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 15:23:55,966 - INFO - Running web_retriever_agent
+2026-05-26 15:24:06,340 - INFO - Running pdf_retriever_agent
+2026-05-26 15:24:06,344 - INFO - Running analysis_agent
+2026-05-26 15:24:07,915 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 15:24:07,955 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 15:24:07,959 - ERROR - Traceback (most recent call last):
+  File "/home/vinitha.chincholi/Documents/research_system/utils/safe_execution.py", line 153, in safe_execute
+    result = agent_function(
+  File "/home/vinitha.chincholi/Documents/research_system/agents/analyzer.py", line 105, in analysis_agent
+    response = structured_llm.invoke(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 3333, in invoke
+    input_ = context.run(step.invoke, input_, config, **kwargs)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 5881, in invoke
+    return self.bound.invoke(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 474, in invoke
+    self.generate_prompt(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1823, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1630, in generate
+    self._generate_with_cache(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1927, in _generate_with_cache
+    for chunk in self._stream(messages, stop=stop, **kwargs):
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_groq/chat_models.py", line 657, in _stream
+    for chunk in self.client.create(messages=message_dicts, **params):
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/resources/chat/completions.py", line 461, in create
+    return self._post(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/_base_client.py", line 1242, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/_base_client.py", line 1044, in request
+    raise self._make_status_error_from_response(err.response) from None
+groq.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krrkqvtxeher06ew6cyg9rdh` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99515, Requested 2181. Please try again in 24m25.344s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+
+2026-05-26 15:24:07,959 - WARNING - analysis_agent failed | Retry: 1
+2026-05-26 15:24:07,959 - ERROR - Daily token quota exhausted
+2026-05-26 15:24:07,961 - INFO - Running validation_agent
+2026-05-26 15:24:08,026 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 15:24:08,029 - ERROR - Traceback (most recent call last):
+  File "/home/vinitha.chincholi/Documents/research_system/utils/safe_execution.py", line 153, in safe_execute
+    result = agent_function(
+  File "/home/vinitha.chincholi/Documents/research_system/agents/validator.py", line 43, in validation_agent
+    response = structured_llm.invoke(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 3333, in invoke
+    input_ = context.run(step.invoke, input_, config, **kwargs)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 5881, in invoke
+    return self.bound.invoke(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 474, in invoke
+    self.generate_prompt(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1823, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1630, in generate
+    self._generate_with_cache(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1970, in _generate_with_cache
+    result = self._generate(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_groq/chat_models.py", line 621, in _generate
+    response = self.client.create(messages=message_dicts, **params)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/resources/chat/completions.py", line 461, in create
+    return self._post(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/_base_client.py", line 1242, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/_base_client.py", line 1044, in request
+    raise self._make_status_error_from_response(err.response) from None
+groq.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krrkqvtxeher06ew6cyg9rdh` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99515, Requested 847. Please try again in 5m12.768s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+
+2026-05-26 15:24:08,030 - WARNING - validation_agent failed | Retry: 1
+2026-05-26 15:24:08,030 - ERROR - Daily token quota exhausted
+2026-05-26 15:39:01,446 - INFO - Running decomposition_agent
+2026-05-26 15:39:02,030 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 15:39:02,082 - INFO - Running retrieval_router_agent
+2026-05-26 15:39:02,352 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 15:39:02,362 - INFO - Running web_retriever_agent
+2026-05-26 15:39:16,988 - INFO - Running pdf_retriever_agent
+2026-05-26 15:39:16,992 - INFO - Running analysis_agent
+2026-05-26 15:39:19,162 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 15:39:23,310 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 15:39:23,324 - INFO - Running validation_agent
+2026-05-26 15:39:24,000 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 15:39:24,008 - INFO - Running human_approval_agent
+2026-05-26 15:42:22,182 - INFO - Running reporting_agent
+2026-05-26 15:42:23,797 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 15:46:28,874 - INFO - Running decomposition_agent
+2026-05-26 15:46:29,133 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 15:46:29,140 - INFO - Running retrieval_router_agent
+2026-05-26 15:46:29,308 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 15:46:29,314 - INFO - Running web_retriever_agent
+2026-05-26 15:46:43,182 - INFO - Running pdf_retriever_agent
+2026-05-26 15:46:43,185 - INFO - Running analysis_agent
+2026-05-26 15:46:44,682 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 15:46:48,892 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 15:46:48,898 - INFO - Running validation_agent
+2026-05-26 15:46:50,030 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 15:46:50,036 - INFO - Running human_approval_agent
+2026-05-26 15:50:41,044 - INFO - Running decomposition_agent
+2026-05-26 15:50:41,829 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 15:50:41,838 - INFO - Running retrieval_router_agent
+2026-05-26 15:50:42,382 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 15:50:42,388 - INFO - Running web_retriever_agent
+2026-05-26 15:50:56,409 - INFO - Running pdf_retriever_agent
+2026-05-26 15:50:58,757 - INFO - Running analysis_agent
+2026-05-26 15:51:00,271 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 15:51:00,309 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 15:51:00,317 - ERROR - Traceback (most recent call last):
+  File "/home/vinitha.chincholi/Documents/research_system/utils/safe_execution.py", line 153, in safe_execute
+    result = agent_function(
+  File "/home/vinitha.chincholi/Documents/research_system/agents/analyzer.py", line 105, in analysis_agent
+    response = structured_llm.invoke(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 3333, in invoke
+    input_ = context.run(step.invoke, input_, config, **kwargs)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 5881, in invoke
+    return self.bound.invoke(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 474, in invoke
+    self.generate_prompt(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1823, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1630, in generate
+    self._generate_with_cache(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1927, in _generate_with_cache
+    for chunk in self._stream(messages, stop=stop, **kwargs):
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_groq/chat_models.py", line 657, in _stream
+    for chunk in self.client.create(messages=message_dicts, **params):
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/resources/chat/completions.py", line 461, in create
+    return self._post(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/_base_client.py", line 1242, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/_base_client.py", line 1044, in request
+    raise self._make_status_error_from_response(err.response) from None
+groq.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kqy24cfmfzxadmbc0d3atm7e` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99078, Requested 1878. Please try again in 13m45.984s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+
+2026-05-26 15:51:00,317 - WARNING - analysis_agent failed | Retry: 1
+2026-05-26 15:51:00,317 - ERROR - Daily token quota exhausted
+2026-05-26 15:51:00,320 - INFO - Running validation_agent
+2026-05-26 15:51:00,403 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 15:51:00,407 - ERROR - Traceback (most recent call last):
+  File "/home/vinitha.chincholi/Documents/research_system/utils/safe_execution.py", line 153, in safe_execute
+    result = agent_function(
+  File "/home/vinitha.chincholi/Documents/research_system/agents/validator.py", line 43, in validation_agent
+    response = structured_llm.invoke(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 3333, in invoke
+    input_ = context.run(step.invoke, input_, config, **kwargs)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 5881, in invoke
+    return self.bound.invoke(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 474, in invoke
+    self.generate_prompt(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1823, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1630, in generate
+    self._generate_with_cache(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1970, in _generate_with_cache
+    result = self._generate(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_groq/chat_models.py", line 621, in _generate
+    response = self.client.create(messages=message_dicts, **params)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/resources/chat/completions.py", line 461, in create
+    return self._post(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/_base_client.py", line 1242, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/_base_client.py", line 1044, in request
+    raise self._make_status_error_from_response(err.response) from None
+groq.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kqy24cfmfzxadmbc0d3atm7e` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99078, Requested 1421. Please try again in 7m11.135999999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+
+2026-05-26 15:51:00,408 - WARNING - validation_agent failed | Retry: 1
+2026-05-26 15:51:00,408 - ERROR - Daily token quota exhausted
+2026-05-26 15:58:02,528 - INFO - Running decomposition_agent
+2026-05-26 15:58:02,910 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 15:58:02,938 - INFO - Running retrieval_router_agent
+2026-05-26 15:58:03,278 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 15:58:03,284 - INFO - Running web_retriever_agent
+2026-05-26 15:58:18,483 - INFO - Running pdf_retriever_agent
+2026-05-26 15:58:20,745 - INFO - Running analysis_agent
+2026-05-26 15:58:22,455 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 15:58:22,498 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 15:58:22,504 - ERROR - Traceback (most recent call last):
+  File "/home/vinitha.chincholi/Documents/research_system/utils/safe_execution.py", line 153, in safe_execute
+    result = agent_function(
+  File "/home/vinitha.chincholi/Documents/research_system/agents/analyzer.py", line 105, in analysis_agent
+    response = structured_llm.invoke(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 3333, in invoke
+    input_ = context.run(step.invoke, input_, config, **kwargs)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 5881, in invoke
+    return self.bound.invoke(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 474, in invoke
+    self.generate_prompt(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1823, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1630, in generate
+    self._generate_with_cache(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1927, in _generate_with_cache
+    for chunk in self._stream(messages, stop=stop, **kwargs):
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_groq/chat_models.py", line 657, in _stream
+    for chunk in self.client.create(messages=message_dicts, **params):
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/resources/chat/completions.py", line 461, in create
+    return self._post(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/_base_client.py", line 1242, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/_base_client.py", line 1044, in request
+    raise self._make_status_error_from_response(err.response) from None
+groq.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kqvpd2g2e8p9ydhp12ncd979` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99192, Requested 2307. Please try again in 21m35.136s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+
+2026-05-26 15:58:22,505 - WARNING - analysis_agent failed | Retry: 1
+2026-05-26 15:58:22,505 - ERROR - Daily token quota exhausted
+2026-05-26 15:58:22,508 - INFO - Running validation_agent
+2026-05-26 15:58:22,603 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 15:58:22,604 - INFO - Retrying request to /openai/v1/chat/completions in 5.000000 seconds
+2026-05-26 15:58:27,659 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 15:58:27,659 - INFO - Retrying request to /openai/v1/chat/completions in 26.000000 seconds
+2026-05-26 15:58:54,225 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 15:58:54,233 - INFO - Running analysis_agent
+2026-05-26 15:58:56,056 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 15:58:56,107 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 15:58:56,111 - ERROR - Traceback (most recent call last):
+  File "/home/vinitha.chincholi/Documents/research_system/utils/safe_execution.py", line 153, in safe_execute
+    result = agent_function(
+  File "/home/vinitha.chincholi/Documents/research_system/agents/analyzer.py", line 105, in analysis_agent
+    response = structured_llm.invoke(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 3333, in invoke
+    input_ = context.run(step.invoke, input_, config, **kwargs)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 5881, in invoke
+    return self.bound.invoke(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 474, in invoke
+    self.generate_prompt(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1823, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1630, in generate
+    self._generate_with_cache(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1927, in _generate_with_cache
+    for chunk in self._stream(messages, stop=stop, **kwargs):
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_groq/chat_models.py", line 657, in _stream
+    for chunk in self.client.create(messages=message_dicts, **params):
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/resources/chat/completions.py", line 461, in create
+    return self._post(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/_base_client.py", line 1242, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/_base_client.py", line 1044, in request
+    raise self._make_status_error_from_response(err.response) from None
+groq.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kqvpd2g2e8p9ydhp12ncd979` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99998, Requested 2323. Please try again in 33m25.344s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+
+2026-05-26 15:58:56,111 - WARNING - analysis_agent failed | Retry: 2
+2026-05-26 15:58:56,111 - ERROR - Daily token quota exhausted
+2026-05-26 15:58:56,113 - INFO - Running validation_agent
+2026-05-26 15:58:56,157 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 15:58:56,161 - ERROR - Traceback (most recent call last):
+  File "/home/vinitha.chincholi/Documents/research_system/utils/safe_execution.py", line 153, in safe_execute
+    result = agent_function(
+  File "/home/vinitha.chincholi/Documents/research_system/agents/validator.py", line 43, in validation_agent
+    response = structured_llm.invoke(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 3333, in invoke
+    input_ = context.run(step.invoke, input_, config, **kwargs)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 5881, in invoke
+    return self.bound.invoke(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 474, in invoke
+    self.generate_prompt(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1823, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1630, in generate
+    self._generate_with_cache(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1970, in _generate_with_cache
+    result = self._generate(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_groq/chat_models.py", line 621, in _generate
+    response = self.client.create(messages=message_dicts, **params)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/resources/chat/completions.py", line 461, in create
+    return self._post(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/_base_client.py", line 1242, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/_base_client.py", line 1044, in request
+    raise self._make_status_error_from_response(err.response) from None
+groq.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kqvpd2g2e8p9ydhp12ncd979` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99998, Requested 905. Please try again in 13m0.192s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+
+2026-05-26 15:58:56,161 - WARNING - validation_agent failed | Retry: 1
+2026-05-26 15:58:56,161 - ERROR - Daily token quota exhausted
+2026-05-26 16:57:59,863 - INFO - Running decomposition_agent
+2026-05-26 16:58:00,307 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 16:58:00,372 - INFO - Running retrieval_router_agent
+2026-05-26 16:58:00,618 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 16:58:00,627 - INFO - Running web_retriever_agent
+2026-05-26 16:58:19,104 - INFO - Running pdf_retriever_agent
+2026-05-26 16:58:22,206 - INFO - Running analysis_agent
+2026-05-26 16:58:24,368 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 16:58:28,502 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 16:58:28,503 - INFO - Retrying request to /openai/v1/chat/completions in 5.000000 seconds
+2026-05-26 16:58:33,627 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 16:58:33,627 - INFO - Retrying request to /openai/v1/chat/completions in 21.000000 seconds
+2026-05-26 16:58:56,997 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 16:58:57,190 - INFO - Running validation_agent
+2026-05-26 16:58:58,226 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 16:58:58,236 - INFO - Running analysis_agent
+2026-05-26 16:59:00,428 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 16:59:00,428 - INFO - Retrying request to /openai/v1/chat/completions in 1.000000 seconds
+2026-05-26 16:59:01,527 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 16:59:01,527 - INFO - Retrying request to /openai/v1/chat/completions in 21.000000 seconds
+2026-05-26 16:59:23,910 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 16:59:28,194 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 16:59:28,194 - INFO - Retrying request to /openai/v1/chat/completions in 35.000000 seconds
+2026-05-26 17:00:05,784 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 17:00:05,995 - INFO - Running validation_agent
+2026-05-26 17:00:07,801 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 17:00:07,811 - INFO - Running analysis_agent
+2026-05-26 17:00:10,065 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 17:00:10,065 - INFO - Retrying request to /openai/v1/chat/completions in 31.000000 seconds
+2026-05-26 17:00:41,311 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 17:00:45,302 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 17:00:45,303 - INFO - Retrying request to /openai/v1/chat/completions in 47.000000 seconds
+2026-05-26 17:03:55,048 - INFO - Running decomposition_agent
+2026-05-26 17:03:55,485 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 17:03:55,518 - INFO - Running retrieval_router_agent
+2026-05-26 17:03:55,668 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 17:03:55,673 - INFO - Running web_retriever_agent
+2026-05-26 17:04:11,129 - INFO - Running pdf_retriever_agent
+2026-05-26 17:04:13,784 - INFO - Running analysis_agent
+2026-05-26 17:04:14,991 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 17:04:19,027 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 17:04:19,027 - INFO - Retrying request to /openai/v1/chat/completions in 2.000000 seconds
+2026-05-26 17:04:23,693 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 17:04:23,926 - INFO - Running validation_agent
+2026-05-26 17:04:25,573 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 17:04:25,582 - INFO - Running human_approval_agent
+2026-05-26 17:04:58,889 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 17:05:02,147 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 17:05:02,147 - INFO - Retrying request to /openai/v1/chat/completions in 22.000000 seconds
+2026-05-26 17:05:24,304 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 17:09:55,092 - INFO - Running decomposition_agent
+2026-05-26 17:09:55,669 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 17:09:55,699 - INFO - Running retrieval_router_agent
+2026-05-26 17:09:55,942 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 17:09:55,948 - INFO - Running web_retriever_agent
+2026-05-26 17:10:11,794 - INFO - Running pdf_retriever_agent
+2026-05-26 17:10:14,377 - INFO - Running analysis_agent
+2026-05-26 17:10:17,145 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 17:10:21,743 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 17:10:21,752 - INFO - Running validation_agent
+2026-05-26 17:10:22,274 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 17:10:22,283 - INFO - Running human_approval_agent
+2026-05-26 17:11:06,554 - INFO - Running decomposition_agent
+2026-05-26 17:11:07,167 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 17:11:07,173 - INFO - Running retrieval_router_agent
+2026-05-26 17:11:07,930 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 17:11:07,939 - INFO - Running web_retriever_agent
+2026-05-26 17:11:21,553 - INFO - Running pdf_retriever_agent
+2026-05-26 17:11:24,036 - INFO - Running analysis_agent
+2026-05-26 17:11:26,020 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 17:11:29,760 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 17:11:29,771 - INFO - Running validation_agent
+2026-05-26 17:11:30,382 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 17:11:30,392 - INFO - Running human_approval_agent
+2026-05-26 17:12:29,331 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 17:12:31,217 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 17:48:12,542 - INFO - Running decomposition_agent
+2026-05-26 17:48:12,894 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 17:48:12,924 - INFO - Running retrieval_router_agent
+2026-05-26 17:48:13,175 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 17:48:13,183 - INFO - Running web_retriever_agent
+2026-05-26 17:48:27,106 - INFO - Running pdf_retriever_agent
+2026-05-26 17:48:29,225 - INFO - Running analysis_agent
+2026-05-26 17:48:30,701 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 17:48:34,198 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 17:48:34,208 - INFO - Running validation_agent
+2026-05-26 17:48:35,572 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 17:48:35,582 - INFO - Running human_approval_agent
+2026-05-26 17:49:41,369 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 17:52:07,877 - INFO - Running decomposition_agent
+2026-05-26 17:52:08,198 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 17:52:08,229 - INFO - Running retrieval_router_agent
+2026-05-26 17:52:08,376 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 17:52:08,383 - INFO - Running web_retriever_agent
+2026-05-26 17:52:22,762 - INFO - Running pdf_retriever_agent
+2026-05-26 17:52:22,768 - INFO - Running analysis_agent
+2026-05-26 17:52:24,575 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 17:52:27,927 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 17:52:27,936 - INFO - Running validation_agent
+2026-05-26 17:52:28,538 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 17:52:28,545 - INFO - Running human_approval_agent
+2026-05-26 17:57:31,773 - INFO - Running decomposition_agent
+2026-05-26 17:57:32,124 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 17:57:32,159 - INFO - Running retrieval_router_agent
+2026-05-26 17:57:32,306 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 17:57:32,314 - INFO - Running web_retriever_agent
+2026-05-26 17:57:41,941 - INFO - Running pdf_retriever_agent
+2026-05-26 17:57:44,357 - INFO - Running analysis_agent
+2026-05-26 17:57:45,619 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 17:57:48,340 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 17:57:48,602 - INFO - Running validation_agent
+2026-05-26 17:57:49,046 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 17:57:49,052 - INFO - Running human_approval_agent
+2026-05-26 17:59:50,159 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:02:30,631 - INFO - Running decomposition_agent
+2026-05-26 18:02:31,194 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:02:31,225 - INFO - Running retrieval_router_agent
+2026-05-26 18:02:31,540 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:02:31,546 - INFO - Running web_retriever_agent
+2026-05-26 18:02:41,639 - INFO - Running pdf_retriever_agent
+2026-05-26 18:02:44,088 - INFO - Running analysis_agent
+2026-05-26 18:02:45,620 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:02:48,781 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:02:48,792 - INFO - Running validation_agent
+2026-05-26 18:02:49,558 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:02:49,564 - INFO - Running human_approval_agent
+2026-05-26 18:03:18,643 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:08:34,875 - INFO - Running decomposition_agent
+2026-05-26 18:08:35,203 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:08:35,235 - INFO - Running retrieval_router_agent
+2026-05-26 18:08:35,513 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:08:35,521 - INFO - Running web_retriever_agent
+2026-05-26 18:08:45,365 - INFO - Running pdf_retriever_agent
+2026-05-26 18:08:47,638 - INFO - Running analysis_agent
+2026-05-26 18:08:49,285 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:08:52,228 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:08:52,236 - INFO - Running validation_agent
+2026-05-26 18:08:52,794 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:08:52,805 - INFO - Running human_approval_agent
+2026-05-26 18:09:20,883 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:11:19,400 - INFO - Running decomposition_agent
+2026-05-26 18:11:19,754 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:11:19,795 - INFO - Running retrieval_router_agent
+2026-05-26 18:11:19,945 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:11:19,955 - INFO - Running web_retriever_agent
+2026-05-26 18:11:31,469 - INFO - Running pdf_retriever_agent
+2026-05-26 18:11:34,161 - INFO - Running analysis_agent
+2026-05-26 18:11:35,536 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:11:38,647 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:11:38,657 - INFO - Running validation_agent
+2026-05-26 18:11:39,154 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:11:39,163 - INFO - Running human_approval_agent
+2026-05-26 18:12:21,842 - INFO - Running human_intent_router_agent
+2026-05-26 18:12:22,201 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:12:22,209 - INFO - Running analysis_agent
+2026-05-26 18:12:23,523 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:12:26,197 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:12:26,203 - INFO - Running validation_agent
+2026-05-26 18:12:26,925 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:12:26,931 - INFO - Running human_approval_agent
+2026-05-26 18:15:46,051 - INFO - Running human_intent_router_agent
+2026-05-26 18:15:46,303 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:15:46,309 - INFO - Running retrieval_router_agent
+2026-05-26 18:15:46,451 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:15:46,455 - INFO - Running web_retriever_agent
+2026-05-26 18:15:53,965 - INFO - Running pdf_retriever_agent
+2026-05-26 18:15:57,978 - INFO - Running analysis_agent
+2026-05-26 18:15:59,473 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:16:02,726 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:16:02,736 - INFO - Running validation_agent
+2026-05-26 18:16:04,254 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:16:04,260 - INFO - Running human_approval_agent
+2026-05-26 18:19:06,883 - INFO - Running decomposition_agent
+2026-05-26 18:19:07,221 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:19:07,248 - INFO - Running retrieval_router_agent
+2026-05-26 18:19:07,478 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:19:07,484 - INFO - Running web_retriever_agent
+2026-05-26 18:26:15,592 - INFO - Running decomposition_agent
+2026-05-26 18:26:15,880 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:26:15,908 - INFO - Running retrieval_router_agent
+2026-05-26 18:26:16,037 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:26:16,042 - INFO - Running web_retriever_agent
+2026-05-26 18:26:27,236 - INFO - Running pdf_retriever_agent
+2026-05-26 18:26:27,239 - INFO - Running analysis_agent
+2026-05-26 18:26:29,742 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:26:33,263 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:26:33,274 - INFO - Running validation_agent
+2026-05-26 18:26:34,234 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:26:34,240 - INFO - Running human_approval_agent
+2026-05-26 18:27:00,211 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:27:32,296 - INFO - Running human_intent_router_agent
+2026-05-26 18:27:32,551 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:27:32,559 - INFO - Running retrieval_router_agent
+2026-05-26 18:27:32,686 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:27:32,691 - INFO - Running web_retriever_agent
+2026-05-26 18:27:40,325 - INFO - Running pdf_retriever_agent
+2026-05-26 18:27:40,326 - INFO - Running analysis_agent
+2026-05-26 18:27:42,194 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:27:44,738 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:27:44,745 - INFO - Running validation_agent
+2026-05-26 18:27:45,212 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:27:45,217 - INFO - Running human_approval_agent
+2026-05-26 18:34:42,069 - INFO - Running decomposition_agent
+2026-05-26 18:34:42,439 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:34:42,445 - INFO - Running retrieval_router_agent
+2026-05-26 18:34:42,756 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:34:42,761 - INFO - Running web_retriever_agent
+2026-05-26 18:34:56,885 - INFO - Running pdf_retriever_agent
+2026-05-26 18:35:01,210 - INFO - Running analysis_agent
+2026-05-26 18:35:04,582 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:35:07,637 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:35:07,644 - INFO - Running validation_agent
+2026-05-26 18:35:08,561 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:35:08,573 - INFO - Running human_approval_agent
+2026-05-26 18:36:28,534 - INFO - Running human_intent_router_agent
+2026-05-26 18:36:28,787 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:36:28,794 - INFO - Running retrieval_router_agent
+2026-05-26 18:36:28,920 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:36:28,923 - INFO - Running web_retriever_agent
+2026-05-26 18:36:37,508 - INFO - Running pdf_retriever_agent
+2026-05-26 18:36:41,124 - INFO - Running analysis_agent
+2026-05-26 18:36:44,550 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:36:46,663 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:36:46,670 - INFO - Running validation_agent
+2026-05-26 18:36:47,115 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:36:47,123 - INFO - Running human_approval_agent
+2026-05-26 18:39:45,304 - INFO - Running decomposition_agent
+2026-05-26 18:39:45,760 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 400 Bad Request"
+2026-05-26 18:39:45,825 - ERROR - Traceback (most recent call last):
+  File "/home/vinitha.chincholi/Documents/research_system/utils/safe_execution.py", line 153, in safe_execute
+    result = agent_function(
+  File "/home/vinitha.chincholi/Documents/research_system/agents/decomposer.py", line 207, in decomposition_agent
+    response = structured_llm.invoke(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 3333, in invoke
+    input_ = context.run(step.invoke, input_, config, **kwargs)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 5881, in invoke
+    return self.bound.invoke(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 474, in invoke
+    self.generate_prompt(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1823, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1630, in generate
+    self._generate_with_cache(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1970, in _generate_with_cache
+    result = self._generate(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_groq/chat_models.py", line 621, in _generate
+    response = self.client.create(messages=message_dicts, **params)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/resources/chat/completions.py", line 461, in create
+    return self._post(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/_base_client.py", line 1242, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/_base_client.py", line 1044, in request
+    raise self._make_status_error_from_response(err.response) from None
+groq.BadRequestError: Error code: 400 - {'error': {'message': "Failed to call a function. Please adjust your prompt. See 'failed_generation' for more details.", 'type': 'invalid_request_error', 'code': 'tool_use_failed', 'failed_generation': '<function=DecompositionOutput> {"subqueries": ["Impact of AI on healthcare outcomes", "AI-assisted diagnosis and treatment in healthcare", "Role of AI in medical research and development", "Ethical considerations of AI in healthcare", "AI-powered healthcare analytics and insights"]}'}}
+
+2026-05-26 18:39:45,825 - WARNING - decomposition_agent failed | Retry: 1
+2026-05-26 18:39:45,825 - ERROR - Unhandled Error: BadRequestError
+2026-05-26 18:39:45,829 - INFO - Running retrieval_router_agent
+2026-05-26 18:39:45,961 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:39:46,011 - INFO - Running web_retriever_agent
+2026-05-26 18:39:46,014 - INFO - Running pdf_retriever_agent
+2026-05-26 18:39:46,017 - INFO - Running analysis_agent
+2026-05-26 18:39:47,076 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:39:47,122 - INFO - Running validation_agent
+2026-05-26 18:39:47,980 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:39:47,990 - INFO - Running analysis_agent
+2026-05-26 18:39:49,492 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:39:49,502 - INFO - Running validation_agent
+2026-05-26 18:39:50,117 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:39:50,124 - INFO - Running analysis_agent
+2026-05-26 18:39:51,166 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:39:51,175 - INFO - Running validation_agent
+2026-05-26 18:39:51,854 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:39:51,861 - INFO - Running analysis_agent
+2026-05-26 18:39:53,162 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:39:53,171 - INFO - Running validation_agent
+2026-05-26 18:39:53,818 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:39:53,826 - INFO - Running analysis_agent
+2026-05-26 18:39:54,837 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:39:54,843 - INFO - Running validation_agent
+2026-05-26 18:39:55,292 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:39:55,302 - INFO - Running human_approval_agent
+2026-05-26 18:40:36,697 - INFO - Running human_intent_router_agent
+2026-05-26 18:40:37,190 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:40:37,198 - INFO - Running retrieval_router_agent
+2026-05-26 18:40:37,326 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:40:37,330 - INFO - Running web_retriever_agent
+2026-05-26 18:40:37,331 - INFO - Running pdf_retriever_agent
+2026-05-26 18:40:37,333 - INFO - Running analysis_agent
+2026-05-26 18:40:38,898 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:40:38,907 - INFO - Running validation_agent
+2026-05-26 18:40:39,559 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:40:39,568 - INFO - Running human_approval_agent
+2026-05-26 18:42:57,341 - INFO - Running decomposition_agent
+2026-05-26 18:42:57,561 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:42:57,567 - INFO - Running retrieval_router_agent
+2026-05-26 18:42:57,730 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:42:57,740 - INFO - Running web_retriever_agent
+2026-05-26 18:43:07,953 - INFO - Running pdf_retriever_agent
+2026-05-26 18:43:07,956 - INFO - Running analysis_agent
+2026-05-26 18:43:10,019 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:43:13,351 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:43:13,358 - INFO - Running validation_agent
+2026-05-26 18:43:14,341 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:43:14,353 - INFO - Running human_approval_agent
+2026-05-26 18:44:12,585 - INFO - Running human_intent_router_agent
+2026-05-26 18:44:12,986 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:44:12,991 - INFO - Running analysis_agent
+2026-05-26 18:44:14,836 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:44:18,286 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:44:18,291 - INFO - Running validation_agent
+2026-05-26 18:44:18,899 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:44:18,905 - INFO - Running human_approval_agent
+2026-05-26 18:45:41,565 - INFO - Running human_intent_router_agent
+2026-05-26 18:45:41,980 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:45:41,985 - INFO - Running retrieval_router_agent
+2026-05-26 18:45:42,136 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:45:42,140 - INFO - Running web_retriever_agent
+2026-05-26 18:45:49,886 - INFO - Running pdf_retriever_agent
+2026-05-26 18:45:49,888 - INFO - Running analysis_agent
+2026-05-26 18:45:51,887 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:45:54,676 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:45:54,683 - INFO - Running validation_agent
+2026-05-26 18:45:55,113 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:45:55,122 - INFO - Running human_approval_agent
+2026-05-26 18:52:09,004 - INFO - Running decomposition_agent
+2026-05-26 18:52:09,448 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:52:09,474 - INFO - Running retrieval_router_agent
+2026-05-26 18:52:09,614 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:52:09,621 - INFO - Running web_retriever_agent
+2026-05-26 18:52:24,750 - INFO - Running pdf_retriever_agent
+2026-05-26 18:52:27,088 - INFO - Running analysis_agent
+2026-05-26 18:52:28,649 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:52:31,571 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:52:31,579 - INFO - Running validation_agent
+2026-05-26 18:52:32,183 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:52:32,193 - INFO - Running human_approval_agent
+2026-05-26 18:53:35,600 - INFO - Running human_intent_router_agent
+2026-05-26 18:53:35,865 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:53:35,873 - INFO - Running analysis_agent
+2026-05-26 18:53:37,276 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:53:40,569 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:53:40,574 - INFO - Running validation_agent
+2026-05-26 18:53:41,122 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:53:41,131 - INFO - Running human_approval_agent
+2026-05-26 18:54:24,554 - INFO - Running human_intent_router_agent
+2026-05-26 18:54:24,847 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:54:24,852 - INFO - Running analysis_agent
+2026-05-26 18:54:26,297 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:54:30,014 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:54:30,021 - INFO - Running validation_agent
+2026-05-26 18:54:30,601 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 18:54:30,608 - INFO - Running human_approval_agent
+2026-05-26 19:00:05,976 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 19:01:16,892 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 19:03:32,078 - INFO - Running decomposition_agent
+2026-05-26 19:03:32,584 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 19:03:32,592 - INFO - Running retrieval_router_agent
+2026-05-26 19:03:32,735 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 19:03:32,744 - INFO - Running web_retriever_agent
+2026-05-26 19:03:47,301 - INFO - Running pdf_retriever_agent
+2026-05-26 19:03:49,824 - INFO - Running analysis_agent
+2026-05-26 19:03:51,983 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 19:03:54,423 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 19:03:54,427 - ERROR - Traceback (most recent call last):
+  File "/home/vinitha.chincholi/Documents/research_system/utils/safe_execution.py", line 153, in safe_execute
+    result = agent_function(
+  File "/home/vinitha.chincholi/Documents/research_system/agents/analyzer.py", line 105, in analysis_agent
+    response = structured_llm.invoke(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 3333, in invoke
+    input_ = context.run(step.invoke, input_, config, **kwargs)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 5881, in invoke
+    return self.bound.invoke(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 474, in invoke
+    self.generate_prompt(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1823, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1630, in generate
+    self._generate_with_cache(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1927, in _generate_with_cache
+    for chunk in self._stream(messages, stop=stop, **kwargs):
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_groq/chat_models.py", line 657, in _stream
+    for chunk in self.client.create(messages=message_dicts, **params):
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/resources/chat/completions.py", line 461, in create
+    return self._post(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/_base_client.py", line 1242, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/_base_client.py", line 1044, in request
+    raise self._make_status_error_from_response(err.response) from None
+groq.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01ksj0jewpfrv8spg5fepb7dsn` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99002, Requested 2112. Please try again in 16m2.496s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+
+2026-05-26 19:03:54,427 - WARNING - analysis_agent failed | Retry: 1
+2026-05-26 19:03:54,427 - ERROR - Daily token quota exhausted
+2026-05-26 19:03:54,430 - INFO - Running validation_agent
+2026-05-26 19:03:54,793 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 19:03:54,799 - INFO - Running analysis_agent
+2026-05-26 19:03:57,279 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 19:03:57,317 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 19:03:57,319 - ERROR - Traceback (most recent call last):
+  File "/home/vinitha.chincholi/Documents/research_system/utils/safe_execution.py", line 153, in safe_execute
+    result = agent_function(
+  File "/home/vinitha.chincholi/Documents/research_system/agents/analyzer.py", line 105, in analysis_agent
+    response = structured_llm.invoke(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 3333, in invoke
+    input_ = context.run(step.invoke, input_, config, **kwargs)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 5881, in invoke
+    return self.bound.invoke(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 474, in invoke
+    self.generate_prompt(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1823, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1630, in generate
+    self._generate_with_cache(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1927, in _generate_with_cache
+    for chunk in self._stream(messages, stop=stop, **kwargs):
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_groq/chat_models.py", line 657, in _stream
+    for chunk in self.client.create(messages=message_dicts, **params):
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/resources/chat/completions.py", line 461, in create
+    return self._post(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/_base_client.py", line 1242, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/_base_client.py", line 1044, in request
+    raise self._make_status_error_from_response(err.response) from None
+groq.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01ksj0jewpfrv8spg5fepb7dsn` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 98999, Requested 2258. Please try again in 18m6.048s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+
+2026-05-26 19:03:57,320 - WARNING - analysis_agent failed | Retry: 2
+2026-05-26 19:03:57,320 - ERROR - Daily token quota exhausted
+2026-05-26 19:03:57,323 - INFO - Running validation_agent
+2026-05-26 19:03:57,679 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 19:03:57,686 - INFO - Running analysis_agent
+2026-05-26 19:04:00,164 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 19:04:00,202 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 19:04:00,205 - ERROR - Traceback (most recent call last):
+  File "/home/vinitha.chincholi/Documents/research_system/utils/safe_execution.py", line 153, in safe_execute
+    result = agent_function(
+  File "/home/vinitha.chincholi/Documents/research_system/agents/analyzer.py", line 105, in analysis_agent
+    response = structured_llm.invoke(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 3333, in invoke
+    input_ = context.run(step.invoke, input_, config, **kwargs)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 5881, in invoke
+    return self.bound.invoke(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 474, in invoke
+    self.generate_prompt(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1823, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1630, in generate
+    self._generate_with_cache(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1927, in _generate_with_cache
+    for chunk in self._stream(messages, stop=stop, **kwargs):
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_groq/chat_models.py", line 657, in _stream
+    for chunk in self.client.create(messages=message_dicts, **params):
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/resources/chat/completions.py", line 461, in create
+    return self._post(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/_base_client.py", line 1242, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/_base_client.py", line 1044, in request
+    raise self._make_status_error_from_response(err.response) from None
+groq.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01ksj0jewpfrv8spg5fepb7dsn` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 98996, Requested 2258. Please try again in 18m3.456s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+
+2026-05-26 19:04:00,205 - WARNING - analysis_agent failed | Retry: 3
+2026-05-26 19:04:00,205 - ERROR - Daily token quota exhausted
+2026-05-26 19:04:00,207 - INFO - Running validation_agent
+2026-05-26 19:04:00,511 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 19:04:00,519 - INFO - Running analysis_agent
+2026-05-26 19:04:01,922 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 19:04:01,961 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 19:04:01,963 - ERROR - Traceback (most recent call last):
+  File "/home/vinitha.chincholi/Documents/research_system/utils/safe_execution.py", line 153, in safe_execute
+    result = agent_function(
+  File "/home/vinitha.chincholi/Documents/research_system/agents/analyzer.py", line 105, in analysis_agent
+    response = structured_llm.invoke(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 3333, in invoke
+    input_ = context.run(step.invoke, input_, config, **kwargs)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 5881, in invoke
+    return self.bound.invoke(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 474, in invoke
+    self.generate_prompt(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1823, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1630, in generate
+    self._generate_with_cache(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1927, in _generate_with_cache
+    for chunk in self._stream(messages, stop=stop, **kwargs):
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_groq/chat_models.py", line 657, in _stream
+    for chunk in self.client.create(messages=message_dicts, **params):
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/resources/chat/completions.py", line 461, in create
+    return self._post(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/_base_client.py", line 1242, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/_base_client.py", line 1044, in request
+    raise self._make_status_error_from_response(err.response) from None
+groq.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01ksj0jewpfrv8spg5fepb7dsn` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 98994, Requested 3306. Please try again in 33m7.2s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+
+2026-05-26 19:04:01,963 - WARNING - analysis_agent failed | Retry: 4
+2026-05-26 19:04:01,963 - ERROR - Daily token quota exhausted
+2026-05-26 19:04:01,966 - INFO - Running validation_agent
+2026-05-26 19:04:02,263 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 19:04:02,270 - INFO - Running analysis_agent
+2026-05-26 19:04:03,692 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 19:04:03,733 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 19:04:03,737 - ERROR - Traceback (most recent call last):
+  File "/home/vinitha.chincholi/Documents/research_system/utils/safe_execution.py", line 153, in safe_execute
+    result = agent_function(
+  File "/home/vinitha.chincholi/Documents/research_system/agents/analyzer.py", line 105, in analysis_agent
+    response = structured_llm.invoke(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 3333, in invoke
+    input_ = context.run(step.invoke, input_, config, **kwargs)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 5881, in invoke
+    return self.bound.invoke(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 474, in invoke
+    self.generate_prompt(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1823, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1630, in generate
+    self._generate_with_cache(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1927, in _generate_with_cache
+    for chunk in self._stream(messages, stop=stop, **kwargs):
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_groq/chat_models.py", line 657, in _stream
+    for chunk in self.client.create(messages=message_dicts, **params):
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/resources/chat/completions.py", line 461, in create
+    return self._post(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/_base_client.py", line 1242, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/_base_client.py", line 1044, in request
+    raise self._make_status_error_from_response(err.response) from None
+groq.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01ksj0jewpfrv8spg5fepb7dsn` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 98992, Requested 3306. Please try again in 33m5.472s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+
+2026-05-26 19:04:03,737 - WARNING - analysis_agent failed | Retry: 5
+2026-05-26 19:04:03,737 - ERROR - Daily token quota exhausted
+2026-05-26 19:04:03,740 - INFO - Running validation_agent
+2026-05-26 19:04:04,050 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 19:04:04,075 - INFO - Running analysis_agent
+2026-05-26 19:04:05,669 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 19:04:05,709 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 19:04:05,712 - ERROR - Traceback (most recent call last):
+  File "/home/vinitha.chincholi/Documents/research_system/utils/safe_execution.py", line 153, in safe_execute
+    result = agent_function(
+  File "/home/vinitha.chincholi/Documents/research_system/agents/analyzer.py", line 105, in analysis_agent
+    response = structured_llm.invoke(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 3333, in invoke
+    input_ = context.run(step.invoke, input_, config, **kwargs)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 5881, in invoke
+    return self.bound.invoke(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 474, in invoke
+    self.generate_prompt(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1823, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1630, in generate
+    self._generate_with_cache(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1927, in _generate_with_cache
+    for chunk in self._stream(messages, stop=stop, **kwargs):
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_groq/chat_models.py", line 657, in _stream
+    for chunk in self.client.create(messages=message_dicts, **params):
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/resources/chat/completions.py", line 461, in create
+    return self._post(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/_base_client.py", line 1242, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/_base_client.py", line 1044, in request
+    raise self._make_status_error_from_response(err.response) from None
+groq.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01ksj0jewpfrv8spg5fepb7dsn` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 98989, Requested 3306. Please try again in 33m2.88s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+
+2026-05-26 19:04:05,712 - WARNING - analysis_agent failed | Retry: 6
+2026-05-26 19:04:05,712 - ERROR - Daily token quota exhausted
+2026-05-26 19:04:05,715 - INFO - Running validation_agent
+2026-05-26 19:04:06,587 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 19:04:06,593 - INFO - Running reporting_agent
+2026-05-26 19:04:06,658 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 19:05:46,944 - INFO - Running decomposition_agent
+2026-05-26 19:05:47,187 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 19:05:47,212 - INFO - Running retrieval_router_agent
+2026-05-26 19:05:47,363 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 19:05:47,369 - INFO - Running web_retriever_agent
+2026-05-26 19:07:05,149 - INFO - Running decomposition_agent
+2026-05-26 19:07:05,426 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 19:07:05,463 - INFO - Running retrieval_router_agent
+2026-05-26 19:07:05,627 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 19:07:05,634 - INFO - Running web_retriever_agent
+2026-05-26 19:07:15,473 - INFO - Running pdf_retriever_agent
+2026-05-26 19:07:15,478 - INFO - Running analysis_agent
+2026-05-26 19:07:17,092 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 19:07:18,737 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 19:07:18,744 - INFO - Running validation_agent
+2026-05-26 19:07:19,494 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 19:07:19,504 - INFO - Running human_approval_agent
+2026-05-26 19:13:44,638 - INFO - Running human_intent_router_agent
+2026-05-26 19:13:45,008 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 19:13:45,016 - INFO - Running retrieval_router_agent
+2026-05-26 19:13:45,191 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 19:13:45,196 - INFO - Running web_retriever_agent
+2026-05-26 19:13:52,729 - INFO - Running pdf_retriever_agent
+2026-05-26 19:13:52,730 - INFO - Running analysis_agent
+2026-05-26 19:13:54,288 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 19:13:56,256 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 19:13:56,286 - ERROR - Traceback (most recent call last):
+  File "/home/vinitha.chincholi/Documents/research_system/utils/safe_execution.py", line 153, in safe_execute
+    result = agent_function(
+  File "/home/vinitha.chincholi/Documents/research_system/agents/analyzer.py", line 105, in analysis_agent
+    response = structured_llm.invoke(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 3333, in invoke
+    input_ = context.run(step.invoke, input_, config, **kwargs)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 5881, in invoke
+    return self.bound.invoke(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 474, in invoke
+    self.generate_prompt(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1823, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1630, in generate
+    self._generate_with_cache(
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 1927, in _generate_with_cache
+    for chunk in self._stream(messages, stop=stop, **kwargs):
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/langchain_groq/chat_models.py", line 657, in _stream
+    for chunk in self.client.create(messages=message_dicts, **params):
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/_streaming.py", line 46, in __iter__
+    for item in self._iterator:
+  File "/home/vinitha.chincholi/Documents/research_system/venv/lib/python3.10/site-packages/groq/_streaming.py", line 91, in __stream__
+    raise APIError(
+groq.APIError: Failed to call a function. Please adjust your prompt. See 'failed_generation' for more details.
+
+2026-05-26 19:13:56,287 - WARNING - analysis_agent failed | Retry: 1
+2026-05-26 19:13:56,287 - ERROR - Unhandled Error: APIError
+2026-05-26 19:13:56,289 - INFO - Running validation_agent
+2026-05-26 19:13:56,776 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 19:13:56,784 - INFO - Running human_approval_agent
+2026-05-26 19:14:25,454 - INFO - Running human_intent_router_agent
+2026-05-26 19:14:26,064 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 19:14:26,069 - INFO - Running analysis_agent
+2026-05-26 19:14:27,446 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 19:14:28,653 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 19:14:28,653 - INFO - Retrying request to /openai/v1/chat/completions in 1.000000 seconds
+2026-05-26 19:14:30,633 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 19:14:30,642 - INFO - Running validation_agent
+2026-05-26 19:14:30,750 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 19:14:30,751 - INFO - Retrying request to /openai/v1/chat/completions in 13.000000 seconds
+2026-05-26 19:14:43,841 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-05-26 19:14:43,842 - INFO - Retrying request to /openai/v1/chat/completions in 4.000000 seconds
+2026-05-26 19:14:48,502 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-26 19:14:48,507 - INFO - Running human_approval_agent

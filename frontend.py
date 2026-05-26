@@ -6,7 +6,10 @@ from dotenv import load_dotenv
 from models.llm_registry import reasoning_llm
 load_dotenv()
 os.environ["STREAMLIT_SERVER_FILE_WATCHER_TYPE"] = "none"
-
+from utils.report_chat import (
+    chat_with_report
+)
+from rag.retriever import retrieve_documents
 import streamlit as st
 import warnings
 from rag.vectorstore import (
@@ -32,98 +35,175 @@ st.set_page_config(
     layout="wide",
 )
 
+
 if "uploader_reset_counter" not in st.session_state:
     st.session_state["uploader_reset_counter"] = 0
 
 # =========================================================
 # ERROR CLASSIFICATION
 # =========================================================
+def classify_error(error_payload):
 
-# CHANGE 1: Updated _ERROR_RULES with additional rate-limit patterns
-_ERROR_RULES = [
-    (
-        [
-            "rate limit",
-            "429",
-            "quota",
-            "too many requests",
-            "resource exhausted",
-            "groqerror",
-            "rate_limit_exceeded",
-            "tokens per day",
-            "requested"
-        ],
-        "Rate limit reached — report could not be generated",
-        (
-            "The AI model has hit its request limit. "
-            "Please wait a minute and try again. "
-            "If this keeps happening, try a shorter query or fewer uploaded PDFs."
+    error_type = error_payload.get(
+        "type",
+        "UnknownError"
+    )
+
+    error_message = error_payload.get(
+        "message",
+        ""
+    )
+    combined = f"""
+
+{error_type}
+
+{error_message}
+
+""".lower()
+    error_map = {
+
+        "RateLimitError": (
+
+            "Rate limit reached",
+
+            (
+                "The AI provider temporarily "
+                "rejected requests due to "
+                "usage limits.\n\n"
+                "Please wait a few minutes "
+                "and retry."
+            )
         ),
-    ),
-    (
-        ["timeout", "timed out", "connection", "network"],
-        "Connection issue — report could not be generated",
-        (
-            "The request timed out while reaching the AI model. "
-            "Please check your connection and try again."
+
+        "Timeout": (
+
+            "Connection timeout",
+
+            (
+                "The request timed out while "
+                "reaching the AI model."
+            )
         ),
-    ),
-    (
-        ["validationerror", "schema", "json"],
-        "Response format error — report could not be generated",
-        (
-            "The AI model returned an unexpected response format. "
-            "This is usually temporary — please try again. "
-            "If it repeats, try rephrasing your query."
+
+        "ValidationError": (
+
+            "Structured response validation failed",
+
+            (
+                "The AI model returned an "
+                "invalid structured response."
+            )
         ),
-    ),
-    (
-        ["recursion"],
-        "Workflow depth exceeded — report could not be generated",
-        (
-            "The research workflow ran too many steps without finishing. "
-            "Try a more focused query or reduce the scope of your research."
+
+        "JSONDecodeError": (
+
+            "Malformed JSON response",
+
+            (
+                "The AI model returned "
+                "invalid JSON output."
+            )
         ),
-    ),
-    (
-        ["context length", "token", "maximum context", "prompt too long"],
-        "Input too large — report could not be generated",
-        (
-            "Your query or uploaded documents exceed the model's input limit. "
-            "Try uploading fewer or smaller PDFs, or shorten your query."
+
+        "RecursionError": (
+
+            "Workflow recursion exceeded",
+
+            (
+                "The workflow exceeded "
+                "maximum recursion depth."
+            )
         ),
-    ),
-]
 
-_FALLBACK_TITLE = "Unexpected error — report could not be generated"
-_FALLBACK_BODY = (
-    "Something went wrong while generating your research report. "
-    "Please try again. If the problem continues, start a new session."
-)
+        "KeyError": (
 
+            "Missing workflow state",
 
-def classify_error(raw_errors: list) -> tuple:
-    combined = " ".join(str(e) for e in raw_errors).lower()
-    for patterns, title, body in _ERROR_RULES:
-        if any(p in combined for p in patterns):
-            return title, body
-    return _FALLBACK_TITLE, _FALLBACK_BODY
+            (
+                "A required workflow state "
+                "value was missing."
+            )
+        ),
 
+        "AttributeError": (
 
-def save_error_message(raw_errors: list):
-    """Classify and persist an error as an assistant chat message."""
-    err_title, err_body = classify_error(raw_errors)
+            "Internal workflow attribute error",
+
+            (
+                "An internal workflow object "
+                "was invalid."
+            )
+        )
+    }
+
+    # =====================================
+    # FALLBACK RATE LIMIT DETECTION
+    # =====================================
+
+    if (
+
+    "429" in combined
+
+    or "rate limit" in combined
+
+    or "rate_limit_exceeded"
+        in combined
+
+    or "tokens per day"
+        in combined
+
+    or "quota exceeded"
+        in combined
+
+    or "insufficient quota"
+        in combined
+):
+
+        return (
+
+            "Rate limit reached",
+
+            (
+                "The AI provider temporarily "
+                "rejected requests due to "
+                "usage limits.\n\n"
+                "Please wait a few minutes "
+                "and retry."
+            )
+        )
+
+    return error_map.get(
+
+        error_type,
+
+        (
+
+            "Unexpected workflow error",
+
+            (
+                "Something went wrong while "
+                "generating the report."
+            )
+        )
+    )
+def save_error_message(error_payload):
+
+    err_title, err_body = classify_error(
+        error_payload
+    )
+
     SessionManager.add_message(
         "assistant",
         {
-            "_type": "workflow_error",   # checked FIRST in render loop
+            "_type": "workflow_error",
+
             "title": err_title,
+
             "message": err_body,
-            "errors": raw_errors,
+
+            "error": error_payload
         },
     )
-
-
 def stream_graph(state, recursion_limit=20):
     """
     Run graph.stream, collect merged result.
@@ -190,7 +270,17 @@ current_session = SessionManager.get_current_session()
 # HEADER
 # =========================================================
 
-st.title("Intelligent Research Assistant")
+with st.container(border=True):
+
+    st.title(
+        "Intelligent Research Assistant"
+    )
+
+    st.caption(
+        "Multi-Agent AI powered research generation, document analysis, validation, and reporting platform."
+    )
+
+st.divider()
 
 # =========================================================
 # CHAT HISTORY
@@ -223,15 +313,53 @@ for idx, msg in enumerate(messages):
         # also contain a "title" key which would otherwise
         # match the report condition below.
         # --------------------------------------------------
-        if isinstance(content, dict) and content.get("_type") == "workflow_error":
-            st.error(f"**{content.get('title', 'Workflow Failed')}**")
-            st.markdown(content.get("message", ""))
-            st.info("You can start a new query below.")
-            errors = content.get("errors", [])
-            if errors:
-                with st.expander("Technical details"):
-                    for err in errors:
-                        st.code(str(err))
+        if (
+    isinstance(content, dict)
+
+            and content.get("_type")
+                == "workflow_error"
+        ):
+
+            st.error(
+            
+                f"**{content.get('title', 'Workflow Failed')}**"
+            )
+
+            st.markdown(
+                content.get("message", "")
+            )
+
+            st.info(
+                "You can start a new query below."
+            )
+
+            error_payload = content.get(
+                "error",
+                {}
+            )
+
+            if error_payload:
+            
+                with st.expander(
+                    "Technical details"
+                ):
+
+                    st.code(
+                    
+                        error_payload.get(
+                            "message",
+                            ""
+                        )
+                    )
+
+                    raw = error_payload.get(
+                        "raw",
+                        ""
+                    )
+
+                    if raw:
+                    
+                        st.code(raw)
 
         # --------------------------------------------------
         # REPORT MESSAGE
@@ -273,6 +401,16 @@ for idx, msg in enumerate(messages):
                     }
 
             references = content.get("references", [])
+            # =====================================
+            # EXTRA REPORT TABS
+            # =====================================
+
+            available_tabs.extend([
+            
+                "Quick Findings",
+
+                "Chat With PDF"
+            ])
             if references:
                 available_tabs.append("References")
                 tab_content["References"] = references
@@ -281,16 +419,134 @@ for idx, msg in enumerate(messages):
                 tabs = st.tabs(available_tabs)
                 for tab_idx, tab_name in enumerate(available_tabs):
                     with tabs[tab_idx]:
-                        tab_data = tab_content[tab_name]
-                        if isinstance(tab_data, list):
-                            for item in tab_data:
-                                st.markdown(f"- {item}")
-                        elif isinstance(tab_data, dict):
-                            st.write(tab_data.get("content", ""))
-                            for cite in tab_data.get("citations", []):
-                                st.markdown(f"- {cite}")
+                                        
+                        # =====================================
+                        # QUICK FINDINGS
+                        # =====================================
+
+                        if tab_name == "Quick Findings":
+                        
+                            findings = content.get(
+                                "key_findings",
+                                []
+                            )
+
+                            if findings:
+                            
+                                for item in findings:
+                                
+                                    st.markdown(
+                                        f"- {item}"
+                                    )
+
+                            else:
+                            
+                                st.info(
+                                    "No findings available."
+                                )
+
+                        # =====================================
+                        # CHAT WITH PDF
+                        # =====================================
+
+                        elif tab_name == "Chat With PDF":
+                        
+                            report_query = st.text_input(
+                            
+                                "Ask about report/PDF",
+
+                                key=f"report_chat_{idx}"
+                            )
+
+                            if st.button(
+                            
+                                "Ask Report",
+
+                                key=f"report_btn_{idx}"
+                            ):
+
+                                vector_db = current_session.get(
+                                    "workflow_result",
+                                    {}
+                                ).get(
+                                    "vector_db"
+                                )
+
+                                if not vector_db:
+                                
+                                    st.error(
+                                        "No vector database available."
+                                    )
+
+                                else:
+                                
+                                    with st.spinner(
+                                        "Searching PDF..."
+                                    ):
+
+                                        answer = chat_with_report(
+                                        
+                                            vector_db=vector_db,
+
+                                            query=report_query
+                                        )
+
+                                    st.write(answer)
+
+                        # =====================================
+                        # NORMAL TABS
+                        # =====================================
+
                         else:
-                            st.write(tab_data)
+                        
+                            tab_data = tab_content[tab_name]
+
+                            if isinstance(
+                                tab_data,
+                                list
+                            ):
+
+                                for item in tab_data:
+                                
+                                    st.markdown(
+                                        f"- {item}"
+                                    )
+
+                            elif isinstance(
+                                tab_data,
+                                dict
+                            ):
+
+                                st.write(
+                                    tab_data.get(
+                                        "content",
+                                        ""
+                                    )
+                                )
+
+                                for cite in tab_data.get(
+                                    "citations",
+                                    []
+                                ):
+
+                                    st.markdown(
+                                        f"- {cite}"
+                                    )
+
+                            else:
+                            
+                                st.write(tab_data)
+                    # with tabs[tab_idx]:
+                    #     tab_data = tab_content[tab_name]
+                    #     if isinstance(tab_data, list):
+                    #         for item in tab_data:
+                    #             st.markdown(f"- {item}")
+                    #     elif isinstance(tab_data, dict):
+                    #         st.write(tab_data.get("content", ""))
+                    #         for cite in tab_data.get("citations", []):
+                    #             st.markdown(f"- {cite}")
+                    #     else:
+                    #         st.write(tab_data)
 
             # CHANGE 2: Guard PDF download with valid_report check
             valid_report = (
@@ -392,21 +648,206 @@ if awaiting_approval:
                     "content": body,
                     "citations": section.get("citations", []),
                 }
+        analysis_tabs.extend([
+
+    
+
+    "Chat With PDF"
+])
 
         if analysis_tabs:
             tabs = st.tabs(analysis_tabs)
             for t_idx, tab_name in enumerate(analysis_tabs):
                 with tabs[t_idx]:
-                    tab_data = analysis_content[tab_name]
-                    if isinstance(tab_data, list):
-                        for item in tab_data:
-                            st.markdown(f"- {item}")
-                    elif isinstance(tab_data, dict):
-                        st.write(tab_data.get("content", ""))
-                        for cite in tab_data.get("citations", []):
-                            st.markdown(f"- {cite}")
+                                
+                    # =====================================
+                    # SEARCH PDF
+                    # =====================================
+                
+                    # # =====================================
+                    # # SEARCH PDF
+                    # # =====================================
+
+                    # if tab_name == "Search PDF":
+                    
+                    #     search_query = st.text_input(
+                        
+                    #         "Search inside uploaded PDFs",
+
+                    #         key="approval_search"
+                    #     )
+
+                    #     if search_query:
+                        
+                    #         vector_db = result.get(
+                    #             "vector_db"
+                    #         )
+
+                    #         if not vector_db:
+                            
+                    #             st.error(
+                    #                 "No PDF database available."
+                    #             )
+
+                    #         else:
+                            
+                    #             docs = retrieve_documents(
+                                
+                    #                 vector_db=vector_db,
+
+                    #                 query=search_query,
+
+                    #                 k=8,
+
+                    #                 rerank_top_k=5
+                    #             )
+
+                    #             if not docs:
+                                
+                    #                 st.warning(
+                    #                     "No matching PDF content found."
+                    #                 )
+
+                    #             else:
+                                
+                    #                 st.success(
+                    #                     f"Found {len(docs)} matching sections"
+                    #                 )
+
+                    #                 for idx, doc in enumerate(docs):
+                                    
+                    #                     title = doc.get(
+                    #                         "title",
+                    #                         f"Chunk {idx+1}"
+                    #                     )
+
+                    #                     content = doc.get(
+                    #                         "content",
+                    #                         ""
+                    #                     )
+
+                    #                     source = doc.get(
+                    #                         "url",
+                    #                         "Unknown Source"
+                    #                     )
+
+                    #                     with st.expander(title):
+                                        
+                    #                         st.write(content)
+
+                    #                         st.caption(
+                    #                             source
+                    #                         )
+                
+                    # =====================================
+                    # CHAT WITH PDF
+                    # =====================================
+                
+                    if tab_name == "Chat With PDF":
+                    
+                        followup_query = st.text_input(
+                        
+                            "Ask about uploaded PDF/research",
+                
+                            key="approval_followup"
+                        )
+                
+                        if st.button(
+                        
+                            "Ask PDF",
+                
+                            key="approval_ask_btn"
+                        ):
+                
+                            vector_db = result.get(
+                                "vector_db"
+                            )
+                
+                            if not vector_db:
+                            
+                                st.error(
+                                    "No PDF database available."
+                                )
+                
+                            else:
+                            
+                                with st.spinner(
+                                    "Searching PDF..."
+                                ):
+                
+                                    answer = chat_with_report(
+                                    
+                                        vector_db=vector_db,
+                
+                                        query=followup_query
+                                    )
+                
+                                st.write(answer)
+                
+                    # =====================================
+                    # NORMAL TABS
+                    # =====================================
+                
                     else:
-                        st.write(tab_data)
+                    
+                        tab_data = analysis_content.get(
+                            tab_name
+                        )
+                
+                        if isinstance(
+                            tab_data,
+                            list
+                        ):
+                
+                            for item in tab_data:
+                            
+                                st.markdown(
+                                    f"- {item}"
+                                )
+                
+                        elif isinstance(
+                            tab_data,
+                            dict
+                        ):
+                
+                            st.write(
+                                tab_data.get(
+                                    "content",
+                                    ""
+                                )
+                            )
+                
+                            citations = tab_data.get(
+                                "citations",
+                                []
+                            )
+                
+                            if citations:
+                            
+                                st.markdown(
+                                    "### Citations"
+                                )
+                
+                                for cite in citations:
+                                
+                                    st.markdown(
+                                        f"- {cite}"
+                                    )
+                
+                        else:
+                        
+                            st.write(tab_data)
+                # with tabs[t_idx]:
+                #     tab_data = analysis_content[tab_name]
+                #     if isinstance(tab_data, list):
+                #         for item in tab_data:
+                #             st.markdown(f"- {item}")
+                #     elif isinstance(tab_data, dict):
+                #         st.write(tab_data.get("content", ""))
+                #         for cite in tab_data.get("citations", []):
+                #             st.markdown(f"- {cite}")
+                #     else:
+                #         st.write(tab_data)
 
         st.markdown("## Validation")
         col1, col2 = st.columns(2)
@@ -451,13 +892,6 @@ if awaiting_approval:
 
                     current_session["workflow_result"] = final_result
 
-                    save_error_message(
-                        final_result.get(
-                            "errors",
-                            ["Unknown workflow failure"]
-                        )
-                    )
-
                     st.error(
                         "Report generation failed due to API/model error."
                     )
@@ -496,13 +930,7 @@ if awaiting_approval:
 
                    current_session["workflow_result"] = final_result
 
-                   save_error_message(
-                       final_result.get(
-                           "errors",
-                           ["Unknown workflow failure"]
-                       )
-                   )
-
+                  
                    st.error(
                        "Research refinement failed due to API/model error."
                    )
@@ -619,11 +1047,10 @@ if generate_btn:
 
             chunks = split_documents(all_docs)
             # vector_db = create_vectorstore(chunks)
-#             delete_vectorstore(
-#     st.session_state.current_session_id
-# )
+            delete_vectorstore(
+    st.session_state.current_session_id
+)
             vector_db = create_vectorstore(chunks,st.session_state.current_session_id)
-            st.info("vector db created")
             st.success("PDF processing complete.")
           # =========================================
         # BUILD CONTEXT-AWARE QUERY
@@ -747,7 +1174,7 @@ if generate_btn:
     """
         initial_state = {
             "thread_id": st.session_state.current_session_id,
-            "query": query,
+            "query": enhanced_query,
             "subqueries": [],
             "retrieved_docs": [],
             "analysis": {},
@@ -756,6 +1183,7 @@ if generate_btn:
             "citations": [],
             "errors": [],
             "retries": {},
+            
             "workflow_complete": False,
             "next_agent": "supervisor",
             "vector_db": vector_db,
@@ -803,7 +1231,10 @@ if generate_btn:
                         expanded=False
                     ):
                     
-                        st.json(value)
+                        try:
+                            st.json(value)
+                        except Exception:
+                            st.write(str(value))
 
                     if isinstance(value, dict):
 
@@ -861,24 +1292,44 @@ if generate_btn:
                             )
 
                             current_session[
-                                "workflow_result"
-                            ] = {
-                                "critical_error": True,
-                                "errors": raw_errors
-                            }
+    "workflow_result"
+] = {
+
+    "critical_error":
+        True,
+
+    "workflow_complete":
+        True,
+
+    "workflow_running":
+        False,
+
+    "awaiting_human_approval":
+        False,
+
+    "error":
+        final_result.get(
+            "error",
+            {}
+        )
+}
 
                             current_session[
                                 "workflow_running"
                             ] = False
                             st.error("Saving frontend error message")
-                            save_error_message(
+   
+                            err_title, err_body = classify_error(
 
-                                final_result.get(
-                                    "errors",
-                                    ["Unknown workflow failure"]
-                                )
-                            )
+    final_result.get(
+        "error",
+        {}
+    )
+)
 
+                            st.error(err_title)
+
+                            st.markdown(err_body)
                             progress.empty()
 
                             status_box.empty()
@@ -895,6 +1346,9 @@ if generate_btn:
                                 "uploader_reset_counter"
                             ] += 1
 
+                            for _ in events:
+                                pass
+                            
                             break
 
                 if hit_error:
@@ -903,34 +1357,55 @@ if generate_btn:
             
 
         except Exception as stream_error:
-
-            traceback.print_exc()   
-          
-
-            st.error("GRAPH.STREAM FAILED")
-
-            st.code(str(stream_error))
-
-            st.code(traceback.format_exc())
-
-            hit_error = True
-
-            final_result.update({
-
-                "critical_error": True,
-
-                "workflow_complete": True,
-
-                "workflow_running": False,
-
-                "awaiting_human_approval": False,
-
-                "errors": [
-                    str(stream_error),
-                    traceback.format_exc()
-                ]
-            })
-
+                
+            combined = str(
+                stream_error
+            ).lower()
+        
+            # =====================================
+            # IGNORE NON-FATAL INTERRUPTS
+            # =====================================
+        
+            if "interrupt" in combined:
+            
+                pass
+            
+            else:
+            
+                traceback.print_exc()
+        
+                hit_error = True
+        
+                final_result.update({
+                
+                    "critical_error":
+                        True,
+        
+                    "workflow_complete":
+                        True,
+        
+                    "workflow_running":
+                        False,
+        
+                    "awaiting_human_approval":
+                        False,
+        
+                    "error": {
+                    
+                        "type":
+                            type(stream_error).__name__,
+        
+                        "message":
+                            str(stream_error),
+        
+                        "raw":
+                            traceback.format_exc()
+                    },
+        
+                    "next_agent":
+                        "__end__"
+                })
+        current_session["workflow_result"] = final_result
         progress.progress(100)
         SessionManager.save_result(final_result)
 
@@ -951,9 +1426,12 @@ if generate_btn:
             )
 
             err_title, err_body = classify_error(
-                raw_errors
-            )
 
+    final_result.get(
+        "error",
+        {}
+    )
+)
             # =====================================
             # SAVE ERROR INTO CHAT HISTORY
             # =====================================
@@ -1011,24 +1489,42 @@ if generate_btn:
         raw_tb = traceback.format_exc()
 
         current_session[
-            "workflow_result"
-        ] = {
+    "workflow_result"
+] = {
 
-            "critical_error": True,
+    "critical_error":
+        True,
 
-            "workflow_complete": True,
+    "workflow_complete":
+        True,
 
-            "errors": [
-                str(e),
-                raw_tb
-            ]
-        }
+    "workflow_running":
+        False,
 
-        save_error_message([
+    "awaiting_human_approval":
+        False,
+
+    "error": {
+
+        "type":
+            type(e).__name__,
+
+        "message":
             str(e),
-            raw_tb
-        ])
 
+        "raw":
+            raw_tb
+    }
+}
+        save_error_message(
+
+    current_session[
+        "workflow_result"
+    ].get(
+        "error",
+        {}
+    )
+)
         current_session[
             "workflow_running"
         ] = False

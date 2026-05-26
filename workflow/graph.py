@@ -191,17 +191,42 @@ builder.add_conditional_edges(
     "supervisor",
     lambda state:
 
-    "FINISH"
+(
 
-    if state.get(
-        "critical_error",
-        False
-    )
-
-    else state.get(
+    state.get(
         "next_agent",
         "FINISH"
-    ),
+    )
+
+    if state.get(
+        "next_agent"
+    ) in {
+
+        "decomposer",
+
+        "router",
+
+        "web_retriever",
+
+        "pdf_retriever",
+
+        "arxiv_retriever",
+
+        "analyzer",
+
+        "validator",
+
+        "reporter",
+
+        "human_approval",
+
+        "human_intent_router",
+
+        "FINISH"
+    }
+
+    else "FINISH"
+),
 
     {
 
@@ -237,17 +262,34 @@ builder.add_conditional_edges(
 
     lambda state:
 
-    "FINISH"
+(
 
-    if state.get(
-        "critical_error",
-        False
-    )
-
-    else state.get(
+    state.get(
         "next_agent",
         "FINISH"
-    ),
+    )
+
+    if state.get(
+        "next_agent"
+    ) in {
+
+        "decomposer",
+
+        "router",
+
+        "pdf_retriever",
+
+        "analyzer",
+
+        "validator",
+
+        "reporter",
+
+        "FINISH"
+    }
+
+    else "FINISH"
+),
 
     {
 
@@ -324,17 +366,28 @@ builder.add_conditional_edges(
 
     lambda state:
 
+(
+
+    state.get(
+        "next_agent",
+        "human_approval"
+    )
+
+    if state.get(
+        "next_agent"
+    ) in {
+
+        "human_approval",
+
+        "analyzer",
+
+        "reporter",
+
         "FINISH"
+    }
 
-        if state.get(
-            "critical_error",
-            False
-        )
-
-        else state.get(
-            "next_agent",
-            "human_approval"
-        ),
+    else "FINISH"
+),
 
     {
 
@@ -358,13 +411,31 @@ builder.add_conditional_edges(
 builder.add_conditional_edges(
 
     "human_approval",
-
     lambda state:
-        "FINISH" 
-        if state.get("critical_error",False)
-        else state.get(
-    "next_agent",
-    "FINISH"
+
+(
+
+    state.get(
+        "next_agent",
+        "FINISH"
+    )
+
+    if state.get(
+        "next_agent"
+    ) in {
+
+        "reporter",
+
+        "analyzer",
+
+        "human_intent_router",
+
+        "HUMAN_INPUT",
+
+        "FINISH"
+    }
+
+    else "FINISH"
 ),
 
     {

@@ -113,18 +113,74 @@ def analysis_agent(state):
             )
 
         analysis = response.model_dump()
-     
+        
+        # =====================================
+        # PRESERVE PREVIOUS DYNAMIC SECTIONS
+        # =====================================
+        
+        previous_analysis = state.get(
+            "analysis",
+            {}
+        )
+        
+        previous_sections = previous_analysis.get(
+            "dynamic_sections",
+            []
+        )
+        
+        new_sections = analysis.get(
+            "dynamic_sections",
+            []
+        )
+        
+        # =====================================
+        # MERGE SECTIONS BY HEADING
+        # =====================================
+        
+        merged_sections = {}
+        
+        # OLD SECTIONS FIRST
+        for section in previous_sections:
+        
+            heading = section.get(
+                "heading",
+                ""
+            ).strip()
+        
+            if heading:
+            
+                merged_sections[
+                    heading.lower()
+                ] = section
+        
+        # NEW/UPDATED SECTIONS OVERRIDE
+        for section in new_sections:
+        
+            heading = section.get(
+                "heading",
+                ""
+            ).strip()
+        
+            if heading:
+            
+                merged_sections[
+                    heading.lower()
+                ] = section
+        
+        # FINAL MERGED LIST
+        analysis["dynamic_sections"] = list(
+            merged_sections.values()
+        )
+             
      
 
     except Exception as e:
 
         print("\n========== ANALYSIS ERROR ==========\n")
-
+    
         print(str(e))
-
-        raise Exception(
-            f"Analysis generation failed: {str(e)}"
-        )
+    
+        raise
     return {
 
         "analysis": analysis,

@@ -4,6 +4,7 @@ import traceback
 from json import (
     JSONDecodeError
 )
+from schemas import state
 from utils.retry import retry_with_backoff
 from pydantic import (
     ValidationError
@@ -77,7 +78,61 @@ AGENT_NAME_MAP = {
         "human_intent_router"
 }
 
+def build_error_response(
 
+    state,
+
+    error_type,
+
+    error_message,
+
+    raw_error=None
+):
+
+    errors = state.get(
+        "errors",
+        []
+    )
+
+    errors.append(
+        error_message
+    )
+
+    return {
+
+        "workflow_complete":
+            True,
+
+        "critical_error":
+            True,
+
+        "awaiting_human_approval":
+            False,
+
+        "workflow_running":
+            False,
+
+        "report":
+            None,
+
+        "error": {
+
+            "type":
+                error_type,
+
+            "message":
+                error_message,
+
+            "raw":
+                raw_error
+        },
+
+        "errors":
+            errors,
+
+        "next_agent":
+            "FINISH"
+    }
 # =========================================================
 # SAFE EXECUTION
 # =========================================================
@@ -117,7 +172,19 @@ def safe_execute(
             raise Exception(
                 "Agent returned invalid format"
             )
+            
+        retries = state.get(
+            "retries",
+            {}
+        )
 
+        if agent_function.__name__ in retries:
+        
+            retries[
+                agent_function.__name__
+            ] = 0
+
+        state["retries"] = retries
         return result
 
     # =========================================================
@@ -136,19 +203,7 @@ def safe_execute(
 
         error_type = type(e).__name__
 
-        # =====================================================
-        # ERROR STORAGE
-        # =====================================================
-
-        errors = state.get(
-            "errors",
-            []
-        )
-
-        errors.append(
-            error_message
-        )
-
+        
         # =====================================================
         # ERROR TYPES
         # =====================================================
@@ -182,32 +237,16 @@ def safe_execute(
                 f"Fatal Error: {error_type}"
             )
 
-            return {
+            return build_error_response(
 
-                "errors":
-                    errors,
+    state=state,
 
-                "workflow_complete":
-                    True,
+    error_type=error_type,
 
-                "critical_error":
-                    True,
+    error_message=error_message,
 
-                "awaiting_human_approval":
-                    False,
-
-                "workflow_running":
-                    False,
-
-                "report":
-                    None,
-
-                "error_type":
-                    error_type,
-
-                "next_agent":
-                    "FINISH"
-            }
+    raw_error=raw_error
+)
 
         # =====================================================
         # RETRIES
@@ -231,7 +270,7 @@ def safe_execute(
         current_retry = retries[
             agent_function.__name__
         ]
-
+        state["retries"] = retries
         logger.warning(
 
             f"{agent_function.__name__} "
@@ -239,83 +278,121 @@ def safe_execute(
             f"{current_retry}"
         )
 
-        # =====================================================
-        # MAX RETRIES
-        # =====================================================
-
-        if current_retry >= MAX_RETRIES:
-
-            logger.error(
-                f"Max retries reached for "
-                f"{agent_function.__name__}"
-            )
-
-            return {
-
-                "errors":
-                    errors,
-
-                "workflow_complete":
-                    True,
-
-                "critical_error":
-                    True,
-
-                "awaiting_human_approval":
-                    False,
-
-                "workflow_running":
-                    False,
-
-                "report":
-                    None,
-
-                "error_type":
-                    error_type,
-
-                "next_agent":
-                    "FINISH"
-            }
+        
 
         # =====================================================
         # RETRYABLE ERRORS
         # =====================================================
 
-        if isinstance(
-            e,
-            retryable_errors
-        ):
+        combined_error = error_message.lower()
 
-            # ================================================
-            # EXPONENTIAL BACKOFF
-            # ================================================
+        # =========================================
+        # NON-RETRYABLE QUOTA EXHAUSTION
+        # =========================================
 
-            result = retry_with_backoff(
+        quota_exhausted = (
+        
+            "tokens per day" in combined_error
 
-    lambda: agent_function(
-        state
-    ),
+            or "tpd" in combined_error
 
-    retries=MAX_RETRIES
-)
+            or "quota exceeded" in combined_error
 
+            or "insufficient quota"
+                in combined_error
+        )
 
-            return {
+        # =========================================
+        # TEMPORARY RETRYABLE LIMITS
+        # =========================================
 
-                "errors":
-                    errors,
+        temporary_rate_limit = (
+        
+            isinstance(
+                e,
+                retryable_errors
+            )
 
-                "retries":
-                    retries,
+            or "429" in combined_error
 
-                "next_agent":
-                    AGENT_NAME_MAP.get(
+            or "rate limit"
+                in combined_error
 
-                        agent_function.__name__,
+            or "too many requests"
+                in combined_error
+        )
 
-                        "FINISH"
-                    )
-            }
+        is_retryable = (
+        
+            temporary_rate_limit
+
+            and not quota_exhausted
+        )
+
+        # =========================================
+        # DAILY QUOTA EXHAUSTED
+        # =========================================
+
+        if quota_exhausted:
+        
+            logger.error(
+                "Daily token quota exhausted"
+            )
+
+            return build_error_response(
+            
+                state=state,
+
+                error_type=
+                    "RateLimitError",
+
+                error_message=
+                    "Daily token quota exhausted",
+
+                raw_error=
+                    raw_error
+            )
+
+        # =========================================
+        # RETRY TEMPORARY FAILURES
+        # =========================================
+
+        if is_retryable:
+        
+            if current_retry >= MAX_RETRIES:
+            
+                logger.error(
+                
+                    f"Max retries reached for "
+                    f"{agent_function.__name__}"
+                )
+
+                return build_error_response(
+                
+                    state=state,
+
+                    error_type=error_type,
+
+                    error_message=error_message,
+
+                    raw_error=raw_error
+                )
+
+            print(
+
+                f"\nTrying again... "
+                f"Attempt "
+                f"{current_retry}/"
+                f"{MAX_RETRIES}"
+            )
+            
+            time.sleep(5)
+            
+            return safe_execute(
+                agent_function,
+                state
+            )
+            
 
         # =====================================================
         # UNKNOWN ERRORS
@@ -325,29 +402,13 @@ def safe_execute(
             f"Unhandled Error: {error_type}"
         )
 
-        return {
+        return build_error_response(
 
-            "errors":
-                errors,
+    state=state,
 
-            "workflow_complete":
-                True,
+    error_type=error_type,
 
-            "critical_error":
-                True,
+    error_message=error_message,
 
-            "awaiting_human_approval":
-                False,
-
-            "workflow_running":
-                False,
-
-            "report":
-                None,
-
-            "error_type":
-                error_type,
-
-            "next_agent":
-                "FINISH"
-        }
+    raw_error=raw_error
+)

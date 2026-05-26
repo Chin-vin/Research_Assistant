@@ -9,3 +9,11 @@ huggingface/
 __pycache__
 
 workflow.log
+
+venv/
+__pycache__/
+*.pyc
+chroma_db/
+.env
+research_paper.pdf
+uploads/

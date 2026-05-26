@@ -174,7 +174,7 @@ def validation_agent(state):
 
         research_sufficient
 
-        and not requires_refinement
+        # and not requires_refinement
 
     ):
 

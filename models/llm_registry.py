@@ -122,20 +122,20 @@ reasoning_llm = get_reasoning_llm()
 # Report generation model
 report_llm = ChatGroq(
     api_key=GROQ_API_KEY,
-    model="llama-3.3-70b-versatile",
+    model="llama-3.1-8b-instant",
     temperature=0.2
 )
 
 # Validation model
 validator_llm = ChatGroq(
     api_key=GROQ_API_KEY,
-    model="llama-3.3-70b-versatile",
+    model="llama-3.1-8b-instant",
     temperature=0
 )
 
 # Summarization model
 summary_llm = ChatGroq(
     api_key=GROQ_API_KEY,
-    model="llama-3.3-70b-versatile",
+    model="qwen/qwen3-32b",
     temperature=0
 )
