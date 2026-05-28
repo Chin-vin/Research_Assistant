@@ -64,23 +64,89 @@ from core.singletons import get_embeddings
 
 embedding_model = get_embeddings()
 
+# def create_vectorstore(
+#     chunks,
+#     thread_id
+# ):
+#     print("\n===== CREATE THREAD ID =====")
+#     print(thread_id)
+#     persist_directory = f"./chroma_db/{thread_id}"
+
+#     os.makedirs(
+#         persist_directory,
+#         exist_ok=True
+#     )
+
+#     collection_name = f"collection_{thread_id}"
+
+#     print("\nCREATE THREAD ID")
+#     print(thread_id)
+
+#     db = Chroma.from_documents(
+
+#         documents=chunks,
+
+#         embedding=embedding_model,
+
+#         persist_directory=persist_directory,
+
+#         collection_name=collection_name
+#     )
+
+#     db.persist()
+
+#     print("\nVECTORSTORE CREATED")
+
+#     print("Persist Dir:", persist_directory)
+
+#     print("Collection:", collection_name)
+
+#     print("Chunk Count:", len(chunks))
+
+#     return db
+import os
+import shutil
+
+from langchain_community.vectorstores import Chroma
+from core.singletons import get_embeddings
+
+embedding_model = get_embeddings()
+
+
+# =========================================================
+# CREATE VECTORSTORE
+# =========================================================
 def create_vectorstore(
     chunks,
     thread_id
 ):
+
     print("\n===== CREATE THREAD ID =====")
     print(thread_id)
+
     persist_directory = f"./chroma_db/{thread_id}"
 
+    collection_name = f"collection_{thread_id}"
+
+    # ==========================================
+    # DELETE OLD VECTORSTORE
+    # ==========================================
+    if os.path.exists(persist_directory):
+
+        print("\nOLD VECTORSTORE FOUND")
+        print("DELETING OLD VECTORSTORE...")
+
+        shutil.rmtree(
+            persist_directory
+        )
+
+    # recreate folder
     os.makedirs(
         persist_directory,
         exist_ok=True
     )
 
-    collection_name = f"collection_{thread_id}"
-
-    print("\nCREATE THREAD ID")
-    print(thread_id)
+    print("\nCREATING NEW VECTORSTORE...")
 
     db = Chroma.from_documents(
 

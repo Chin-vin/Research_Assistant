@@ -109,6 +109,29 @@ Validator Feedback:
 
 Human Feedback:
 {human_feedback}
+
+EXISTING SECTIONS:
+{existing_sections}
+
+SECTION OPERATION:
+{section_operation}
+
+SECTION INSTRUCTION:
+{section_instruction}
+
+IMPORTANT:
+
+Preserve ALL existing sections.
+
+ADD:
+- generate ONLY requested new section
+
+UPDATE:
+- generate ONLY updated target section
+
+DO NOT:
+- regenerate all sections
+- rewrite unrelated sections
 Generate analysis using EXACTLY
 these fields:
 

@@ -7,6 +7,9 @@ from rag.ingestion import (
 from utils.query_validator import (
     is_valid_query
 )
+from rag.vectorstore import (
+    load_vectorstore
+)
 
 MAX_ARXIV_QUERIES = 5
 
@@ -172,22 +175,21 @@ def arxiv_retriever_agent(state):
 
             continue
 
-    # --------------------------------
-    # COMBINE DOCUMENTS
-    # --------------------------------
+    # # --------------------------------
+    # # COMBINE DOCUMENTS
+    # # --------------------------------
 
-    existing_docs = state.get(
-        "retrieved_docs",
-        []
-    )
+    # existing_docs = state.get(
+    #     "retrieved_docs",
+    #     []
+    # )
 
-    combined_docs = (
-        existing_docs + documents
-    )
-    vector_db = state.get(
-        "vector_db"
-    )
-
+    # combined_docs = (
+    #     existing_docs + documents
+    # )
+    vector_db = load_vectorstore(
+    state["thread_id"]
+)
     vector_db = ingest_documents_to_vectorstore(
 
     documents=documents,
@@ -204,7 +206,12 @@ def arxiv_retriever_agent(state):
     return {
 
     "retrieved_docs":
-        combined_docs,
-    "vector_db":
-        vector_db
+        documents
 }
+#     return {
+
+#     "retrieved_docs":
+#         combined_docs,
+#     "vector_db":
+#         vector_db
+# }

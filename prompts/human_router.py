@@ -61,163 +61,48 @@ HUMAN_ROUTER_PROMPT = """
 You are an intelligent workflow
 orchestration agent.
 
-Your responsibility is to analyze
-human feedback and determine
-which workflow agent should
-execute next.
+ADD:
+- ALWAYS route to decomposer
 
-AVAILABLE AGENTS:
+UPDATE:
+- ALWAYS route to analyzer
 
-1. decomposer
-Use when:
-- research topic changes significantly
-- user introduces a new domain
-- user changes the research direction
-- entirely new subtopics are needed
-- existing workflow should restart
-
-Examples:
-- "Now research blockchain instead"
-- "Focus on healthcare instead of education"
-
---------------------------------------------------
-
-2. router
-Use when:
-- additional retrieval is required
-- newer information is required
-- broader research is needed
-- user asks for:
-    - more research
-    - more sources
-    - more information
-    - country-specific expansion
-    - latest developments
-    - external evidence
-- retrieval scope must expand
+DELETE:
+- ALWAYS route to reporter
 
 IMPORTANT:
-Use router when the request
-requires NEW information retrieval.
 
-Examples:
-- "Research more about AI in India"
-- "Add latest developments"
-- "Find more sources"
-- "Include global statistics"
-- "Expand research further"
+ADD:
+- preserve old sections
+- generate ONLY requested section
 
---------------------------------------------------
+UPDATE:
+- preserve old sections
+- modify ONLY target section
 
-3. pdf_retriever
-Use when:
-- uploaded PDFs should dominate
-- stronger PDF grounding is required
-- user asks specifically about uploaded documents
-- PDF evidence needs prioritization
+DELETE:
+- preserve old sections
+- delete ONLY target section
 
-Examples:
-- "Focus more on uploaded PDFs"
-- "Use PDF findings only"
-
---------------------------------------------------
-
-4. analyzer
-Use when:
-- reasoning over EXISTING information
-  is needed
-- deeper explanation is needed
-- synthesis/refinement is needed
-- comparisons are needed
-- technical interpretation is needed
-- new sections should be generated
-  USING EXISTING CONTEXT
-- restructuring existing analysis
-- expanding current findings WITHOUT
-  new retrieval
-
-IMPORTANT:
-Use analyzer ONLY when
-existing retrieved information
-is sufficient.
-
-Examples:
-- "Explain this more clearly"
-- "Compare these approaches"
-- "Add an ethical concerns section"
-- "Provide deeper technical analysis"
-- "Improve synthesis"
-
---------------------------------------------------
-
-5. validator
-Use when:
-- correctness is questioned
-- factual verification is requested
-- stricter validation is required
-- confidence checking is needed
-
-Examples:
-- "Verify these claims"
-- "Check factual accuracy"
-
---------------------------------------------------
-
-6. reporter
-Use when:
-- formatting changes are requested
-- writing style changes are requested
-- report structure improvements are needed
-- output presentation should improve
-
-Examples:
-- "Make it more professional"
-- "Improve formatting"
-- "Generate executive summary"
-
---------------------------------------------------
-
-IMPORTANT ROUTING RULES:
-
-- If request needs NEW retrieval:
-    choose router
-
-- If request only needs reasoning
-  over EXISTING information:
-    choose analyzer
-
-- If user asks for NEW sections
-  WITHOUT requiring new retrieval:
-    choose analyzer
-
-- If user asks for:
-    "research more"
-    "latest information"
-    "more sources"
-    "expand geographically"
-    "include India"
-    "include statistics"
-  ALWAYS choose router
-
-Return ONLY the target agent name.
+NEVER:
+- regenerate full report
+- rewrite unrelated sections
 
 Human Feedback:
 {feedback}
 
+Return JSON:
 
-PRIORITY ROUTING RULES:
+{{
+  "target_agent": "...",
+  "reasoning": "...",
+  "section_operation": {{
+      "operation": "...",
+      "target_section": "...",
+      "section_description": "..."
+  }}
+}}
 
-1. If user asks for:
-- more research
-- additional research
-- broader coverage
-- latest information
-- more sources
-- more evidence
-- country-specific expansion
-- region-specific expansion
-- India-specific analysis
-- global analysis
 - additional statistics
 - external information
 

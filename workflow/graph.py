@@ -39,6 +39,10 @@ from agents.analyzer import (
     analysis_agent
 )
 
+from agents.add_section_agent import (
+    add_section_agent
+)
+
 from agents.validator import (
     validation_agent
 )
@@ -130,6 +134,15 @@ builder.add_node(
     lambda state:
         safe_execute(
             analysis_agent,
+            state
+        )
+)
+
+builder.add_node(
+    "add_section_agent",
+    lambda state:
+        safe_execute(
+            add_section_agent,
             state
         )
 )
@@ -348,9 +361,24 @@ builder.add_edge(
 #     "analyzer"
 # )
 
-builder.add_edge(
+builder.add_conditional_edges(
     "pdf_retriever",
-    "analyzer"
+    lambda state:
+        "add_section_agent"
+        if state.get(
+            "section_operation",
+            {}
+        ).get(
+            "operation",
+            "none"
+        ) == "add"
+        else "analyzer",
+    {
+        "add_section_agent":
+            "add_section_agent",
+        "analyzer":
+            "analyzer"
+    }
 )
 # -----------------------------------
 # ANALYSIS FLOW
@@ -358,6 +386,11 @@ builder.add_edge(
 
 builder.add_edge(
     "analyzer",
+    "validator"
+)
+
+builder.add_edge(
+    "add_section_agent",
     "validator"
 )
 builder.add_conditional_edges(

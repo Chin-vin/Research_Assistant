@@ -72,6 +72,42 @@ def analysis_agent(state):
     ""
 )
 
+    section_operation = state.get(
+        "section_operation",
+        {}
+    )
+
+    operation = section_operation.get(
+        "operation",
+        "none"
+    )
+
+    target_section = section_operation.get(
+        "target_section",
+        ""
+    ).strip().lower()
+
+    if operation == "update":
+
+        query_text = target_section
+
+        section_instruction = f'''
+
+Generate ONLY UPDATED VERSION
+of this section:
+
+{target_section}
+
+Preserve unrelated sections.
+
+'''
+
+    else:
+
+        query_text = state["query"]
+
+        section_instruction = ""
+
     current_date = datetime.now().strftime(
     "%d-%m-%Y"
 )
@@ -80,18 +116,48 @@ def analysis_agent(state):
     # ANALYSIS PROMPT
     # --------------------------------
 
+    previous_analysis = state.get(
+        "analysis",
+        {}
+    )
+
+    previous_sections = previous_analysis.get(
+        "dynamic_sections",
+        []
+    )
+
+    existing_sections = ""
+
+    for section in previous_sections:
+
+        existing_sections += f"""
+
+SECTION:
+{section.get("heading", "")}
+
+CONTENT:
+{section.get("content", "")}
+
+"""
+
     prompt = ANALYSIS_PROMPT.format(
 
     current_date=current_date,
 
-    query=state["query"],
+    query=query_text,
 
     validator_feedback=
         validator_feedback,
 
     documents=context,
 
-    human_feedback=human_feedback
+    human_feedback=human_feedback,
+
+    existing_sections=existing_sections,
+
+    section_operation=section_operation,
+
+    section_instruction=section_instruction
 )
     
     
@@ -113,64 +179,94 @@ def analysis_agent(state):
             )
 
         analysis = response.model_dump()
-        
-        # =====================================
-        # PRESERVE PREVIOUS DYNAMIC SECTIONS
-        # =====================================
-        
-        previous_analysis = state.get(
-            "analysis",
-            {}
-        )
-        
-        previous_sections = previous_analysis.get(
-            "dynamic_sections",
-            []
-        )
-        
-        new_sections = analysis.get(
-            "dynamic_sections",
-            []
-        )
-        
-        # =====================================
-        # MERGE SECTIONS BY HEADING
-        # =====================================
-        
-        merged_sections = {}
-        
-        # OLD SECTIONS FIRST
-        for section in previous_sections:
-        
-            heading = section.get(
-                "heading",
-                ""
-            ).strip()
-        
-            if heading:
-            
-                merged_sections[
-                    heading.lower()
-                ] = section
-        
-        # NEW/UPDATED SECTIONS OVERRIDE
-        for section in new_sections:
-        
-            heading = section.get(
-                "heading",
-                ""
-            ).strip()
-        
-            if heading:
-            
-                merged_sections[
-                    heading.lower()
-                ] = section
-        
-        # FINAL MERGED LIST
-        analysis["dynamic_sections"] = list(
-            merged_sections.values()
-        )
+
+        if operation == "update":
+
+            new_sections = analysis.get(
+                "dynamic_sections",
+                []
+            )
+
+            updated_sections = []
+
+            for old_section in previous_sections:
+
+                old_heading = old_section.get(
+                    "heading",
+                    ""
+                ).strip().lower()
+
+                replaced = False
+
+                for new_section in new_sections:
+
+                    new_heading = new_section.get(
+                        "heading",
+                        ""
+                    ).strip().lower()
+
+                    if (
+                        target_section == old_heading
+                        or target_section == new_heading
+                        or old_heading in target_section
+                        or target_section in old_heading
+                    ):
+
+                        updated_sections.append(
+                            new_section
+                        )
+
+                        replaced = True
+                        break
+
+                if not replaced:
+
+                    updated_sections.append(
+                        old_section
+                    )
+
+            previous_analysis[
+                "dynamic_sections"
+            ] = updated_sections
+
+            analysis = previous_analysis
+
+        else:
+
+            merged_sections = {}
+
+            for section in previous_sections:
+
+                heading = section.get(
+                    "heading",
+                    ""
+                ).strip()
+
+                if heading:
+
+                    merged_sections[
+                        heading.lower()
+                    ] = section
+
+            for section in analysis.get(
+                "dynamic_sections",
+                []
+            ):
+
+                heading = section.get(
+                    "heading",
+                    ""
+                ).strip()
+
+                if heading:
+
+                    merged_sections[
+                        heading.lower()
+                    ] = section
+
+            analysis["dynamic_sections"] = list(
+                merged_sections.values()
+            )
              
      
 

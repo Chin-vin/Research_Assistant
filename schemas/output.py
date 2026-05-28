@@ -65,15 +65,15 @@ class ValidationOutput(
 
     validation_summary: str = ""
 
-class ReportOutput(BaseModel):
+# class ReportOutput(BaseModel):
 
-    title: str
+#     title: str
 
-    executive_summary: str
+#     executive_summary: str
 
-    findings: List[str]
+#     findings: List[str]
 
-    conclusion: str
+#     conclusion: str
 
 
 from pydantic import BaseModel
@@ -232,6 +232,20 @@ class RoutingOutput(BaseModel):
 
 
 
+class SectionOperation(BaseModel):
+
+    operation: Literal[
+        "add",
+        "update",
+        "delete",
+        "none"
+    ] = "none"
+
+    target_section: str = ""
+
+    section_description: str = ""
+
+
 class HumanIntentOutput(
 
     BaseModel
@@ -240,9 +254,6 @@ class HumanIntentOutput(
     target_agent: Literal[
 
         "decomposer",
-
-        "router",
-
         "pdf_retriever",
 
         "analyzer",
@@ -253,3 +264,7 @@ class HumanIntentOutput(
     ]
 
     reasoning: str
+
+    section_operation: SectionOperation = Field(
+        default_factory=SectionOperation
+    )

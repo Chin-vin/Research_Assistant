@@ -38,17 +38,24 @@ def human_intent_router_agent(state):
     result = response.model_dump()
 
     target_agent = result.get(
-    "target_agent",
-    "analyzer"
-)
+        "target_agent",
+        "analyzer"
+    )
 
-    print(
-    f"\nHuman Intent Routing → "
-    f"{target_agent}"
-)
+    section_operation = result.get(
+        "section_operation",
+        {
+            "operation": "none",
+            "target_section": "",
+            "section_description": ""
+        }
+    )
 
     return {
 
-    "next_agent":
-        target_agent
+        "next_agent":
+            target_agent,
+
+        "section_operation":
+            section_operation
 }

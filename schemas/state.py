@@ -36,3 +36,4 @@ class AgentState(TypedDict):
     human_feedback: str
     validator_feedback: str
     awaiting_human_approval: bool
+    section_operation: Dict[str, Any]

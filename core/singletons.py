@@ -78,7 +78,7 @@ def get_fast_llm():
 
     return ChatGroq(
 
-        model="llama-3.1-8b-instant",
+        model="llama-3.3-70b-versatile",
 
         temperature=0
     )
@@ -96,7 +96,7 @@ def get_reasoning_llm():
 
     return ChatGroq(
 
-        model="llama-3.1-8b-instant",
+        model="llama-3.3-70b-versatile",
 
         temperature=0,
         streaming = True

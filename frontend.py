@@ -3,7 +3,7 @@ import os
 import base64
 import traceback
 from dotenv import load_dotenv
-from models.llm_registry import reasoning_llm
+from models.llm_registry import reasoning_llm,fast_llm
 load_dotenv()
 os.environ["STREAMLIT_SERVER_FILE_WATCHER_TYPE"] = "none"
 from utils.report_chat import (
@@ -34,6 +34,44 @@ st.set_page_config(
     page_icon="📘",
     layout="wide",
 )
+
+st.markdown("""
+<style>
+
+.block-container {
+    padding-top: 1.5rem;
+    padding-bottom: 1rem;
+    max-width: 95%;
+}
+
+h1, h2, h3 {
+    font-weight: 650 !important;
+}
+
+div[data-testid="stChatMessage"] {
+    padding: 0.8rem 1rem;
+    border-radius: 12px;
+    margin-bottom: 0.8rem;
+    border: 1px solid rgba(120,120,120,0.15);
+}
+
+.stButton > button {
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+.stTextArea textarea {
+    border-radius: 10px !important;
+}
+
+button[data-baseweb="tab"] {
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    font-weight: 500;
+}
+
+</style>
+""", unsafe_allow_html=True)
 
 
 if "uploader_reset_counter" not in st.session_state:
@@ -270,17 +308,17 @@ current_session = SessionManager.get_current_session()
 # HEADER
 # =========================================================
 
-with st.container(border=True):
+# with st.container(border=True):
 
-    st.title(
-        "Intelligent Research Assistant"
-    )
+#     st.title(
+#         "Intelligent Research Assistant"
+#     )
 
-    st.caption(
-        "Multi-Agent AI powered research generation, document analysis, validation, and reporting platform."
-    )
+#     st.caption(
+#         "Multi-Agent AI powered research generation, document analysis, validation, and reporting platform."
+#     )
 
-st.divider()
+# st.divider()
 
 # =========================================================
 # CHAT HISTORY
@@ -289,19 +327,50 @@ st.divider()
 messages = current_session.get("messages", [])
 
 if not messages:
-    st.markdown(
-        """
-        ### Generate professional research reports
 
-        Features:
-        - Multi-Agent RAG
-        - Human Approval
-        - PDF Upload
-        - Dynamic Research Sections
-        - Vector Search
-        - Streaming Responses
-        """
+    st.markdown(
+        "## AI Research Assistant"
     )
+
+    st.caption(
+        "Generate intelligent research reports using "
+        "multi-agent retrieval, PDF analysis, "
+        "reasoning workflows, validation loops, "
+        "and structured report generation."
+    )
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+
+        st.info(
+            "📂 Intelligent Research Input\n\n"
+
+            "- Upload PDFs and research papers\n"
+            "- Ask research-related questions\n"
+            "- Use hybrid PDF + query workflows\n"
+        )
+
+    with col2:
+
+        st.info(
+
+            "🤖 Multi-Agent Pipeline\n"
+
+            "- Query decomposition and routing\n"
+            "- Parallel web, arXiv, and PDF retrieval\n"
+            "- Deep analytical reasoning and synthesis\n"
+        )
+
+    with col3:
+
+        st.info(
+
+            "📑 Validated Research Reports\n\n"
+
+            "- Dynamic section generation\n"
+            "- Evidence-backed findings and citations\n"
+            "- Validation, refinement, and report generation")
 
 for idx, msg in enumerate(messages):
     with st.chat_message(msg["role"]):
@@ -1177,9 +1246,23 @@ if generate_btn:
             "query": enhanced_query,
             "subqueries": [],
             "retrieved_docs": [],
-            "analysis": {},
+            "analysis": {
+                "summary": "",
+                "confidence_score": 0,
+                "key_findings": [],
+                "dynamic_sections": []
+            },
             "validation": {},
-            "report": {},
+            "report": {
+                "title": "",
+                "abstract": "",
+                "keywords": [],
+                "introduction": "",
+                "methodology": "",
+                "conclusion": "",
+                "references": [],
+                "dynamic_sections": []
+            },
             "citations": [],
             "errors": [],
             "retries": {},
@@ -1191,7 +1274,8 @@ if generate_btn:
             "pdf_uploaded": bool(uploaded_file_objects),
             "awaiting_human_approval": False,
             "human_feedback": "",
-            "validator_feedback":""
+            "validator_feedback":"",
+            "section_operation":{}
         }
 
         progress.progress(25)
@@ -1241,7 +1325,78 @@ if generate_btn:
                         # final_result.update(value)
                         old_vector_db = final_result.get("vector_db")
 
-                        final_result.update(value)
+                        if "analysis" in value:
+
+                            old_analysis = final_result.get(
+                                "analysis",
+                                {}
+                            )
+
+                            new_analysis = value.get(
+                                "analysis",
+                                {}
+                            )
+
+                            merged_analysis = {
+                                **old_analysis,
+                                **new_analysis
+                            }
+
+                            if not new_analysis.get(
+                                "dynamic_sections"
+                            ):
+
+                                merged_analysis[
+                                    "dynamic_sections"
+                                ] = old_analysis.get(
+                                    "dynamic_sections",
+                                    []
+                                )
+
+                            final_result[
+                                "analysis"
+                            ] = merged_analysis
+
+                        if "report" in value:
+
+                            old_report = final_result.get(
+                                "report",
+                                {}
+                            )
+
+                            new_report = value.get(
+                                "report",
+                                {}
+                            )
+
+                            merged_report = {
+                                **old_report,
+                                **new_report
+                            }
+
+                            if not new_report.get(
+                                "dynamic_sections"
+                            ):
+
+                                merged_report[
+                                    "dynamic_sections"
+                                ] = old_report.get(
+                                    "dynamic_sections",
+                                    []
+                                )
+
+                            final_result[
+                                "report"
+                            ] = merged_report
+
+                        for k, v in value.items():
+
+                            if k not in [
+                                "analysis",
+                                "report"
+                            ]:
+
+                                final_result[k] = v
                     
                         if (
                             final_result.get("vector_db") is None
@@ -1283,8 +1438,6 @@ if generate_btn:
                         ):
 
                             hit_error = True
-
-                            final_result.update(value)
 
                             raw_errors = final_result.get(
                                 "errors",
