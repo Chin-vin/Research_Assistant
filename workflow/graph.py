@@ -495,24 +495,64 @@ builder.add_conditional_edges(
 
     lambda state:
 
-        "FINISH"
+        "END"
 
         if state.get(
-            "critical_error",
+            "workflow_complete",
             False
         )
 
-        else "SUCCESS",
+        else state.get(
+            "next_agent",
+            "END"
+        ),
 
     {
 
-        "SUCCESS":
+        "END":
             END,
 
-        "FINISH":
-            END
+        "analyzer":
+            "analyzer",
+
+        "validator":
+            "validator",
+
+        "decomposer":
+            "decomposer",
+
+        "reporter":
+            "reporter",
+
+        "pdf_retriever":
+            "pdf_retriever"
     }
 )
+# builder.add_conditional_edges(
+
+#     "reporter",
+
+#     lambda state:
+
+#         "FINISH"
+
+#         if state.get(
+#             "critical_error",
+#             False
+#         )
+
+#         else "SUCCESS",
+
+#     {
+
+#         "SUCCESS":
+#             END,
+
+#         "FINISH":
+#             END
+#     }
+# )
+
 # -----------------------------------
 # COMPILE GRAPH
 # -----------------------------------

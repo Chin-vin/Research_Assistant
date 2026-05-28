@@ -96,7 +96,7 @@ def get_reasoning_llm():
 
     return ChatGroq(
 
-        model="llama-3.3-70b-versatile",
+        model="qwen/qwen3-32b",
 
         temperature=0,
         streaming = True

@@ -30,6 +30,12 @@ structured_llm = (
     )
 )
 
+from groq import (
+    RateLimitError,
+    APITimeoutError,
+    APIConnectionError,
+    BadRequestError
+)
 
 def analysis_agent(state):
     print("Analyser agent")
@@ -117,9 +123,9 @@ Preserve unrelated sections.
     # --------------------------------
 
     previous_analysis = state.get(
-        "analysis",
-        {}
-    )
+    "previous_analysis",
+    {}
+) or {}
 
     previous_sections = previous_analysis.get(
         "dynamic_sections",
@@ -272,11 +278,89 @@ CONTENT:
 
     except Exception as e:
 
-        print("\n========== ANALYSIS ERROR ==========\n")
-    
-        print(str(e))
-    
-        raise
+        traceback.print_exc()
+
+        # =====================================
+        # ERROR TYPE DETECTION
+        # =====================================
+
+        if isinstance(
+            e,
+            RateLimitError
+        ):
+
+            error_title = (
+                "Rate Limit Exceeded"
+            )
+
+        elif isinstance(
+            e,
+            APITimeoutError
+        ):
+
+            error_title = (
+                "Request Timeout"
+            )
+
+        elif isinstance(
+            e,
+            APIConnectionError
+        ):
+
+            error_title = (
+                "API Connection Error"
+            )
+
+        elif isinstance(
+            e,
+            BadRequestError
+        ):
+
+            error_title = (
+                "Bad Request Error"
+            )
+
+        elif isinstance(
+            e,
+            json.JSONDecodeError
+        ):
+
+            error_title = (
+                "JSON Parsing Failed"
+            )
+
+        elif isinstance(
+            e,
+            ValueError
+        ):
+
+            error_title = (
+                "Validation Error"
+            )
+
+        else:
+
+            error_title = type(e).__name__
+
+        return {
+
+            "critical_error": True,
+
+            "workflow_complete": True,
+
+            "next_agent": "FINISH",
+
+            "error": {
+
+                "type": error_title,
+
+                "message": str(e),
+
+                "raw": traceback.format_exc()
+            }
+        }
+
+
     return {
 
         "analysis": analysis,

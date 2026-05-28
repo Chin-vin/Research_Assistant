@@ -12,11 +12,11 @@ class AgentState(TypedDict):
         operator.add
     ]
 
-    analysis: str
+    analysis: Dict[str,Any]
 
     validation: Dict[str, Any]
 
-    report: str
+    report: Dict[str,Any]
 
     citations: List[Dict[str, str]]
 
@@ -37,3 +37,6 @@ class AgentState(TypedDict):
     validator_feedback: str
     awaiting_human_approval: bool
     section_operation: Dict[str, Any]
+    previous_report: Dict[str, Any]
+
+    previous_analysis: Dict[str, Any]

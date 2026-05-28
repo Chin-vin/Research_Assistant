@@ -18,3 +18,4 @@ pytest
 torch 
 torchvision
 streamlit
+reportlab

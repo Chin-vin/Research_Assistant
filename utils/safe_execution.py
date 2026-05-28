@@ -307,20 +307,34 @@ def safe_execute(
         # =========================================
 
         temporary_rate_limit = (
-        
-            isinstance(
-                e,
-                retryable_errors
-            )
 
-            or "429" in combined_error
+    isinstance(
+        e,
+        retryable_errors
+    )
 
-            or "rate limit"
-                in combined_error
+    or "429" in combined_error
 
-            or "too many requests"
-                in combined_error
-        )
+    or "rate limit"
+        in combined_error
+
+    or "too many requests"
+        in combined_error
+
+    or "resource exhausted"
+        in combined_error
+
+    or "quota" in combined_error
+
+    or "tokens per minute"
+        in combined_error
+
+    or "requests per minute"
+        in combined_error
+
+    or "service unavailable"
+        in combined_error
+)
 
         is_retryable = (
         

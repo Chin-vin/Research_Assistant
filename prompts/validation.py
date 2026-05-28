@@ -155,6 +155,36 @@ IMPORTANT:
 - confidence_score MUST be between 0 and 100
 - avoid defaulting to 0 unnecessarily
 - be balanced and evidence-aware
+IMPORTANT JSON STRUCTURE RULES:
+
+You MUST return EXACTLY this structure:
+
+{{
+  "research_sufficient": true,
+  "confidence_score": 0,
+  "issues": {{
+    "missing_information": [],
+    "unsupported_claims": [],
+    "weak_sections": []
+  }},
+  "refinement": {{
+    "needs_refinement": false,
+    "refinement_type": "",
+    "refinement_focus": [],
+    "feedback_for_retry": ""
+  }},
+  "validation_summary": ""
+}}
+
+CRITICAL:
+
+- missing_information MUST be inside "issues"
+- unsupported_claims MUST be inside "issues"
+- weak_sections MUST be inside "issues"
+
+- feedback_for_retry MUST be inside "refinement"
+
+DO NOT place these fields at root level.
 
 """
 

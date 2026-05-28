@@ -4,7 +4,7 @@ from models.llm_registry import (
 
 MAX_CONTEXT_DOCS = 10
 
-MAX_CONTEXT_CHARS = 12000
+MAX_CONTEXT_CHARS = 5000
 
 
 def build_context(documents):
@@ -127,7 +127,7 @@ CONTENT:
         - filler content
 
         Keep the final compressed context
-        under 10000 words.
+        under 5000 words.
 
         DOCUMENTS:
         {raw_context}

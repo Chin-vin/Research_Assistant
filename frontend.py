@@ -102,16 +102,21 @@ def classify_error(error_payload):
 
         "RateLimitError": (
 
-            "Rate limit reached",
+    "Rate Limit Exceeded",
 
-            (
-                "The AI provider temporarily "
-                "rejected requests due to "
-                "usage limits.\n\n"
-                "Please wait a few minutes "
-                "and retry."
-            )
-        ),
+    (
+        "The AI provider rate limit was exceeded.\n\n"
+
+        "Possible reasons:\n"
+
+        "- Too many requests\n"
+        "- Daily quota exhausted\n"
+        "- Tokens per minute exceeded\n"
+        "- Temporary provider overload\n\n"
+
+        "Please wait a few minutes and retry."
+    )
+),
 
         "Timeout": (
 
@@ -162,6 +167,7 @@ def classify_error(error_payload):
                 "value was missing."
             )
         ),
+
 
         "AttributeError": (
 
@@ -243,26 +249,121 @@ def save_error_message(error_payload):
         },
     )
 def stream_graph(state, recursion_limit=20):
-    """
-    Run graph.stream, collect merged result.
-    Returns (final_result, hit_critical_error: bool).
-    """
+
     events = graph.stream(
+
         state,
-        config={"recursion_limit": recursion_limit},
+
+        config={
+            "recursion_limit": recursion_limit
+        },
+
         stream_mode="updates",
     )
-    merged = state.copy()
-    for event in events:
-        for node, value in event.items():
-            if isinstance(value, dict):
-                merged.update(value)
-                if value.get("critical_error"):
-                    for _ in events:   # drain so graph cleans up
-                        pass
-                    return merged, True
-    return merged, False
 
+    merged = state.copy()
+
+    for event in events:
+
+        for node, value in event.items():
+
+            if isinstance(value, dict):
+
+                # =====================================
+                # MERGE ANALYSIS SAFELY
+                # =====================================
+
+                if "analysis" in value:
+
+                    old_analysis = merged.get(
+                        "analysis",
+                        {}
+                    ) or {}
+
+                    new_analysis = value.get(
+                        "analysis",
+                        {}
+                    ) or {}
+
+                    merged_analysis = old_analysis.copy()
+
+                    for k, v in new_analysis.items():
+
+                        if v in [
+                            "",
+                            [],
+                            {},
+                            None
+                        ]:
+                            continue
+
+                        merged_analysis[k] = v
+
+                    merged[
+                        "analysis"
+                    ] = merged_analysis
+
+                # =====================================
+                # MERGE REPORT SAFELY
+                # =====================================
+
+                if "report" in value:
+
+                    old_report = merged.get(
+                        "report",
+                        {}
+                    ) or {}
+
+                    new_report = value.get(
+                        "report",
+                        {}
+                    ) or {}
+
+                    merged_report = old_report.copy()
+
+                    for k, v in new_report.items():
+
+                        if v in [
+                            "",
+                            [],
+                            {},
+                            None
+                        ]:
+                            continue
+
+                        merged_report[k] = v
+
+                    merged[
+                        "report"
+                    ] = merged_report
+
+                # =====================================
+                # NORMAL FIELDS
+                # =====================================
+
+                for k, v in value.items():
+
+                    if k not in [
+                        "analysis",
+                        "report"
+                    ]:
+
+                        merged[k] = v
+
+                # =====================================
+                # CRITICAL ERROR
+                # =====================================
+
+                if value.get(
+                    "critical_error"
+                ):
+
+                    for _ in events:
+                        pass
+
+                    return merged, True
+
+    return merged, False
 
 # =========================================================
 # SESSION INITIALIZATION
@@ -979,32 +1080,195 @@ if awaiting_approval:
                 st.rerun()
 
         # REFINE
-        elif refine:
-            with st.spinner("Refining Research..."):
-                result["awaiting_human_approval"] = False
-                result["human_feedback"] = user_feedback
-                # result["errors"] = []
+        # elif refine:
+        #     with st.spinner("Refining Research..."):
+        #         result["awaiting_human_approval"] = False
+        #         result["human_feedback"] = user_feedback
+        #         # result["errors"] = []
 
-                # Reset retries for new refinement cycle
+        #         # Reset retries for new refinement cycle
+
+        #         result["retries"] = {}
+        #         result["next_agent"] = "human_intent_router"
+
+        #         final_result, hit_error = stream_graph(result, recursion_limit=20)
+        #         SessionManager.save_result(final_result)
+
+        #         if hit_error:
+
+        #            current_session["workflow_running"] = False
+
+        #            current_session["workflow_result"] = final_result
+
+                  
+        #            st.error(
+        #                "Research refinement failed due to API/model error."
+        #            )
+
+        #            st.stop()
+
+        #         st.rerun()
+        elif refine:
+
+            with st.spinner("Refining Research..."):
+
+                # result["previous_report"] = result.get(
+                #     "report",
+                #     {}
+                # )
+
+                # result["previous_analysis"] = result.get(
+                #     "analysis",
+                #     {}
+                # )
+
+                result["awaiting_human_approval"] = False
+
+                result["human_feedback"] = user_feedback
 
                 result["retries"] = {}
-                result["next_agent"] = "human_intent_router"
 
-                final_result, hit_error = stream_graph(result, recursion_limit=20)
-                SessionManager.save_result(final_result)
+                result["next_agent"] = "human_intent_router"
+                # =====================================
+                # STORE PREVIOUS SNAPSHOT
+                # =====================================
+
+                existing_workflow = current_session.get(
+                    "workflow_result",
+                    {}
+                ) or {}
+
+                # =====================================
+                # FALLBACK SAFE LOAD
+                # =====================================
+
+                existing_report = (
+
+                    existing_workflow.get(
+                        "report",
+                        {}
+                    )
+
+                    or result.get(
+                        "report",
+                        {}
+                    )
+                )
+
+                existing_analysis = (
+
+                    existing_workflow.get(
+                        "analysis",
+                        {}
+                    )
+
+                    or result.get(
+                        "analysis",
+                        {}
+                    )
+                )
+
+                # =====================================
+                # SAVE PREVIOUS STATE
+                # =====================================
+
+                result["previous_report"] = (
+                    existing_report
+                )
+
+                result["previous_analysis"] = (
+                    existing_analysis
+                )
+
+                print(
+                    "\n========== SAVED PREVIOUS REPORT ==========\n"
+                )
+
+                print(
+                    result["previous_report"]
+                )
+
+                print(
+                    "\n========== SAVED PREVIOUS ANALYSIS ==========\n"
+                )
+
+                print(
+                    result["previous_analysis"]
+                )
+
+                print("\n========== SAVED PREVIOUS REPORT ==========\n")
+                print(result["previous_report"])
+
+                print("\n========== SAVED PREVIOUS ANALYSIS ==========\n")
+                print(result["previous_analysis"])
+
+                final_result, hit_error = stream_graph(
+                    result,
+                    recursion_limit=20
+                )
+                SessionManager.save_result(
+                    final_result
+                )
+
+                # =====================================
+                # ERROR
+                # =====================================
 
                 if hit_error:
 
-                   current_session["workflow_running"] = False
+                    current_session[
+                        "workflow_running"
+                    ] = False
 
-                   current_session["workflow_result"] = final_result
+                    current_session[
+                        "workflow_result"
+                    ] = final_result
 
-                  
-                   st.error(
-                       "Research refinement failed due to API/model error."
-                   )
 
-                   st.stop()
+                    st.error(
+                        "Research refinement failed."
+                    )
+
+                    st.stop()
+
+                # =====================================
+                # IMPORTANT FIX
+                # =====================================
+
+                if (
+    final_result.get("report")
+    and isinstance(
+        final_result["report"],
+        dict
+    )
+):
+
+                    SessionManager.add_message(
+
+                        "assistant",
+
+                        final_result["report"]
+                    )
+
+                # =====================================
+                # CLEANUP
+                # =====================================
+
+                current_session[
+                    "workflow_running"
+                ] = False
+
+                current_session[
+                    "workflow_result"
+                ] = final_result
+
+                st.session_state[
+                    "reset_query"
+                ] = True
+
+                st.session_state[
+                    "uploader_reset_counter"
+                ] += 1
 
                 st.rerun()
 
@@ -1254,14 +1518,6 @@ if generate_btn:
             },
             "validation": {},
             "report": {
-                "title": "",
-                "abstract": "",
-                "keywords": [],
-                "introduction": "",
-                "methodology": "",
-                "conclusion": "",
-                "references": [],
-                "dynamic_sections": []
             },
             "citations": [],
             "errors": [],
@@ -1275,7 +1531,10 @@ if generate_btn:
             "awaiting_human_approval": False,
             "human_feedback": "",
             "validator_feedback":"",
-            "section_operation":{}
+            "section_operation":{},
+            "previous_report": {},
+
+"previous_analysis": {},
         }
 
         progress.progress(25)
@@ -1330,65 +1589,109 @@ if generate_btn:
                             old_analysis = final_result.get(
                                 "analysis",
                                 {}
-                            )
+                            ) or {}
 
                             new_analysis = value.get(
                                 "analysis",
                                 {}
-                            )
+                            ) or {}
 
-                            merged_analysis = {
-                                **old_analysis,
-                                **new_analysis
-                            }
+                            merged_analysis = old_analysis.copy()
 
-                            if not new_analysis.get(
+                            # =====================================
+                            # DO NOT OVERWRITE WITH EMPTY VALUES
+                            # =====================================
+
+                            for k, v in new_analysis.items():
+
+                                if v in [
+                                    "",
+                                    [],
+                                    {},
+                                    None
+                                ]:
+                                    continue
+
+                                merged_analysis[k] = v
+
+                            # =====================================
+                            # PRESERVE DYNAMIC SECTIONS
+                            # =====================================
+
+                            if new_analysis.get(
                                 "dynamic_sections"
                             ):
 
                                 merged_analysis[
                                     "dynamic_sections"
-                                ] = old_analysis.get(
-                                    "dynamic_sections",
-                                    []
-                                )
+                                ] = new_analysis[
+                                    "dynamic_sections"
+                                ]
 
                             final_result[
                                 "analysis"
                             ] = merged_analysis
-
                         if "report" in value:
 
                             old_report = final_result.get(
                                 "report",
                                 {}
-                            )
+                            ) or {}
 
                             new_report = value.get(
                                 "report",
                                 {}
-                            )
+                            ) or {}
 
-                            merged_report = {
-                                **old_report,
-                                **new_report
-                            }
+                            # =====================================
+                            # IGNORE EMPTY REPORTS
+                            # =====================================
 
-                            if not new_report.get(
+                            if not new_report:
+
+                                new_report = {}
+
+                            merged_report = old_report.copy()
+                            if not merged_report:
+
+                                merged_report = final_result.get(
+                                    "previous_report",
+                                    {}
+                                ).copy()
+
+                            for k, v in new_report.items():
+
+                                # =====================================
+                                # SKIP EMPTY VALUES
+                                # =====================================
+
+                                if v in [
+                                    "",
+                                    [],
+                                    {},
+                                    None
+                                ]:
+                                    continue
+
+                                merged_report[k] = v
+
+                            # =====================================
+                            # PRESERVE DYNAMIC SECTIONS
+                            # =====================================
+
+                            if new_report.get(
                                 "dynamic_sections"
                             ):
 
                                 merged_report[
                                     "dynamic_sections"
-                                ] = old_report.get(
-                                    "dynamic_sections",
-                                    []
-                                )
+                                ] = new_report[
+                                    "dynamic_sections"
+                                ]
 
                             final_result[
                                 "report"
                             ] = merged_report
-
                         for k, v in value.items():
 
                             if k not in [
@@ -1572,7 +1875,13 @@ if generate_btn:
             current_session[
                 "workflow_result"
             ] = final_result
+            save_error_message(
 
+            final_result.get(
+        "error",
+        {}
+    )
+)
             raw_errors = final_result.get(
                 "errors",
                 ["Unknown workflow failure"]
