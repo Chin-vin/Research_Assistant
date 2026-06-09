@@ -2,11 +2,7 @@ from rag.retriever import (
     retrieve_documents
 )
 
-from langgraph.config import (
-    get_stream_writer
-)
 def pdf_retriever_agent(state):
-    writer = get_stream_writer()
     # -----------------------------
     # ROUTING MODE
     # -----------------------------

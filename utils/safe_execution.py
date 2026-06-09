@@ -202,6 +202,18 @@ def safe_execute(
         error_message = str(e)
 
         error_type = type(e).__name__
+        print("\n" + "=" * 80) 
+        print("SAFE EXECUTE CAUGHT ERROR") 
+        print("=" * 80) 
+        print("AGENT:") 
+        print(agent_function.__name__) 
+        print("\nERROR TYPE:") 
+        print(error_type) 
+        print("\nERROR MESSAGE:") 
+        print(error_message) 
+        print("\nRETRIES:") 
+        print(state.get("retries")) 
+        print("=" * 80 + "\n")
 
         
         # =====================================================

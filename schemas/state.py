@@ -18,7 +18,10 @@ class AgentState(TypedDict):
 
     report: Dict[str,Any]
 
-    citations: List[Dict[str, str]]
+    citations: Annotated[
+    List[Dict[str, str]],
+    operator.add
+]
 
     errors: Annotated[
         List[str],
@@ -40,3 +43,6 @@ class AgentState(TypedDict):
     previous_report: Dict[str, Any]
 
     previous_analysis: Dict[str, Any]
+    critical_error: bool
+
+    error: Dict[str, Any]

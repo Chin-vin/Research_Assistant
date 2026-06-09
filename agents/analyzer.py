@@ -1,6 +1,5 @@
 
 from datetime import datetime
-
 from prompts.analysis import (
     ANALYSIS_PROMPT
 )
@@ -279,87 +278,23 @@ CONTENT:
     except Exception as e:
 
         traceback.print_exc()
-
-        # =====================================
-        # ERROR TYPE DETECTION
-        # =====================================
-
-        if isinstance(
-            e,
-            RateLimitError
-        ):
-
-            error_title = (
-                "Rate Limit Exceeded"
-            )
-
-        elif isinstance(
-            e,
-            APITimeoutError
-        ):
-
-            error_title = (
-                "Request Timeout"
-            )
-
-        elif isinstance(
-            e,
-            APIConnectionError
-        ):
-
-            error_title = (
-                "API Connection Error"
-            )
-
-        elif isinstance(
-            e,
-            BadRequestError
-        ):
-
-            error_title = (
-                "Bad Request Error"
-            )
-
-        elif isinstance(
-            e,
-            json.JSONDecodeError
-        ):
-
-            error_title = (
-                "JSON Parsing Failed"
-            )
-
-        elif isinstance(
-            e,
-            ValueError
-        ):
-
-            error_title = (
-                "Validation Error"
-            )
-
-        else:
-
-            error_title = type(e).__name__
-
-        return {
-
-            "critical_error": True,
-
-            "workflow_complete": True,
-
-            "next_agent": "FINISH",
-
-            "error": {
-
-                "type": error_title,
-
-                "message": str(e),
-
-                "raw": traceback.format_exc()
-            }
-        }
-
+    
+        print("\n" + "=" * 80)
+        print("ANALYSIS AGENT ERROR")
+        print("=" * 80)
+    
+        print("ERROR TYPE:")
+        print(type(e).__name__)
+    
+        print("\nERROR MESSAGE:")
+        print(str(e))
+    
+        print("\nTRACEBACK:")
+        print(traceback.format_exc())
+    
+        print("=" * 80 + "\n")
+    
+        raise
 
     return {
 

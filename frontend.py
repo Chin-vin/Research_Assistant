@@ -13,8 +13,10 @@ from rag.retriever import retrieve_documents
 import streamlit as st
 import warnings
 from rag.vectorstore import (
+    cleanup_all_vectorstores,
     delete_vectorstore
 )
+
 warnings.filterwarnings("ignore")
 
 from session_manager import SessionManager
@@ -81,6 +83,15 @@ if "uploader_reset_counter" not in st.session_state:
 # ERROR CLASSIFICATION
 # =========================================================
 def classify_error(error_payload):
+
+    print("\n" + "=" * 100)
+    print("CLASSIFY_ERROR")
+    print("=" * 100)
+
+    print("PAYLOAD:")
+    print(error_payload)
+
+    print("=" * 100 + "\n")
 
     error_type = error_payload.get(
         "type",
@@ -224,30 +235,92 @@ def classify_error(error_payload):
 
             "Unexpected workflow error",
 
-            (
-                "Something went wrong while "
-                "generating the report."
-            )
+            error_message
+            if error_message
+            else
+            "Something went wrong while generating the report."
         )
     )
 def save_error_message(error_payload):
+
+    print("\n" + "=" * 100)
+    print("SAVE_ERROR_MESSAGE EXECUTED")
+    print("=" * 100)
+
+    print("ERROR PAYLOAD:")
+    print(error_payload)
+
+    print("=" * 100 + "\n")
+
+    if not isinstance(
+        error_payload,
+        dict
+    ):
+
+        error_payload = {
+
+            "type":
+                "UnknownError",
+
+            "message":
+                str(error_payload)
+        }
+
+    print("\n" + "=" * 100)
+    print("ABOUT TO CLASSIFY ERROR")
+    print("=" * 100)
+
+    print(error_payload)
+
+    print("=" * 100 + "\n")
 
     err_title, err_body = classify_error(
         error_payload
     )
 
+    print("\n" + "=" * 100)
+    print("CLASSIFY ERROR COMPLETE")
+    print("=" * 100)
+
+    print("TITLE:")
+    print(err_title)
+
+    print("\nBODY:")
+    print(err_body)
+
+    print("=" * 100 + "\n")
+
+    error_message = {
+
+        "_type":
+            "workflow_error",
+
+        "title":
+            err_title,
+
+        "message":
+            err_body,
+
+        "error":
+            error_payload
+    }
+
+    print("\n" + "=" * 100)
+    print("ERROR MESSAGE OBJECT")
+    print("=" * 100)
+
+    print(error_message)
+
+    print("=" * 100 + "\n")
+
     SessionManager.add_message(
+
         "assistant",
-        {
-            "_type": "workflow_error",
 
-            "title": err_title,
-
-            "message": err_body,
-
-            "error": error_payload
-        },
+        error_message
     )
+
+    print("\nERROR MESSAGE SAVED\n")
 def stream_graph(state, recursion_limit=20):
 
     events = graph.stream(
@@ -364,12 +437,20 @@ def stream_graph(state, recursion_limit=20):
                     return merged, True
 
     return merged, False
+if "app_initialized" not in st.session_state:
 
+    cleanup_all_vectorstores()
+
+    st.session_state[
+        "app_initialized"
+    ] = True
+
+SessionManager.initialize()
 # =========================================================
 # SESSION INITIALIZATION
 # =========================================================
 
-SessionManager.initialize()
+# SessionManager.initialize()
 current_session = SessionManager.get_current_session()
 
 # =========================================================
@@ -420,18 +501,40 @@ current_session = SessionManager.get_current_session()
 #     )
 
 # st.divider()
-
+st.title(
+        "Intelligent Research Assistant"
+    )
+st.divider()
 # =========================================================
-# CHAT HISTORY
+# ALWAYS FETCH LATEST SESSION
 # =========================================================
 
-messages = current_session.get("messages", [])
+current_session = (
+    SessionManager.get_current_session()
+)
+
+messages = current_session.get(
+    "messages",
+    []
+)
+
+print("\n========== CHAT HISTORY ==========")
+
+print(
+    f"MESSAGE COUNT: {len(messages)}"
+)
+
+for i, msg in enumerate(messages):
+    print(f"\nMESSAGE {i}")
+    print(msg)
+
+print("\n==================================")
 
 if not messages:
 
-    st.markdown(
-        "## AI Research Assistant"
-    )
+    # st.markdown(
+    #     "## AI Research Assistant"
+    # )
 
     st.caption(
         "Generate intelligent research reports using "
@@ -474,6 +577,24 @@ if not messages:
             "- Validation, refinement, and report generation")
 
 for idx, msg in enumerate(messages):
+    print("\n" + "=" * 100)
+    print("CHAT MESSAGE RENDER")
+    print("=" * 100)
+
+    print("INDEX:")
+    print(idx)
+
+    print("\nROLE:")
+    print(msg.get("role"))
+
+    print("\nCONTENT TYPE:")
+    print(type(msg.get("content")))
+
+    print("\nCONTENT:")
+    print(msg.get("content"))
+
+    print("=" * 100 + "\n")
+
     with st.chat_message(msg["role"]):
         content = msg["content"]
 
@@ -490,6 +611,25 @@ for idx, msg in enumerate(messages):
                 == "workflow_error"
         ):
 
+            print("\n========== RENDERING ERROR ==========")
+            print(content)
+            print("\n====================================")
+
+            print("\n" + "=" * 100)
+            print("RENDERING WORKFLOW ERROR")
+            print("=" * 100)
+
+            print("TITLE:")
+            print(content.get("title"))
+
+            print("\nMESSAGE:")
+            print(content.get("message"))
+
+            print("\nERROR OBJECT:")
+            print(content.get("error"))
+
+            print("=" * 100 + "\n")
+
             st.error(
             
                 f"**{content.get('title', 'Workflow Failed')}**"
@@ -499,13 +639,21 @@ for idx, msg in enumerate(messages):
                 content.get("message", "")
             )
 
-            st.info(
-                "You can start a new query below."
-            )
-
             error_payload = content.get(
                 "error",
                 {}
+            )
+
+            if error_payload.get(
+                "message"
+            ):
+
+                st.warning(
+                    error_payload["message"]
+                )
+
+            st.info(
+                "You can start a new query below."
             )
 
             if error_payload:
@@ -577,9 +725,9 @@ for idx, msg in enumerate(messages):
 
             available_tabs.extend([
             
-                "Quick Findings",
+                # "Quick Findings",
 
-                "Chat With PDF"
+                # "Chat With PDF"
             ])
             if references:
                 available_tabs.append("References")
@@ -594,118 +742,118 @@ for idx, msg in enumerate(messages):
                         # QUICK FINDINGS
                         # =====================================
 
-                        if tab_name == "Quick Findings":
+                        # if tab_name == "Quick Findings":
                         
-                            findings = content.get(
-                                "key_findings",
-                                []
-                            )
+                        #     findings = content.get(
+                        #         "key_findings",
+                        #         []
+                        #     )
 
-                            if findings:
+                        #     if findings:
                             
-                                for item in findings:
+                        #         for item in findings:
                                 
-                                    st.markdown(
-                                        f"- {item}"
-                                    )
+                        #             st.markdown(
+                        #                 f"- {item}"
+                        #             )
 
-                            else:
+                        #     else:
                             
-                                st.info(
-                                    "No findings available."
-                                )
+                        #         st.info(
+                        #             "No findings available."
+                        #         )
 
                         # =====================================
                         # CHAT WITH PDF
                         # =====================================
 
-                        elif tab_name == "Chat With PDF":
+                        # elif tab_name == "Chat With PDF":
                         
-                            report_query = st.text_input(
+                        #     report_query = st.text_input(
                             
-                                "Ask about report/PDF",
+                        #         "Ask about report/PDF",
 
-                                key=f"report_chat_{idx}"
-                            )
+                        #         key=f"report_chat_{idx}"
+                        #     )
 
-                            if st.button(
+                        #     if st.button(
                             
-                                "Ask Report",
+                        #         "Ask Report",
 
-                                key=f"report_btn_{idx}"
-                            ):
+                        #         key=f"report_btn_{idx}"
+                        #     ):
 
-                                vector_db = current_session.get(
-                                    "workflow_result",
-                                    {}
-                                ).get(
-                                    "vector_db"
-                                )
+                        #         vector_db = current_session.get(
+                        #             "workflow_result",
+                        #             {}
+                        #         ).get(
+                        #             "vector_db"
+                        #         )
 
-                                if not vector_db:
+                        #         if not vector_db:
                                 
-                                    st.error(
-                                        "No vector database available."
-                                    )
+                        #             st.error(
+                        #                 "No vector database available."
+                        #             )
 
-                                else:
+                        #         else:
                                 
-                                    with st.spinner(
-                                        "Searching PDF..."
-                                    ):
+                        #             with st.spinner(
+                        #                 "Searching PDF..."
+                        #             ):
 
-                                        answer = chat_with_report(
+                        #                 answer = chat_with_report(
                                         
-                                            vector_db=vector_db,
+                        #                     vector_db=vector_db,
 
-                                            query=report_query
-                                        )
+                        #                     query=report_query
+                        #                 )
 
-                                    st.write(answer)
+                        #             st.write(answer)
 
                         # =====================================
                         # NORMAL TABS
                         # =====================================
 
-                        else:
+                     
                         
-                            tab_data = tab_content[tab_name]
+                        tab_data = tab_content[tab_name]
 
-                            if isinstance(
-                                tab_data,
-                                list
-                            ):
+                        if isinstance(
+                            tab_data,
+                            list
+                        ):
 
-                                for item in tab_data:
-                                
-                                    st.markdown(
-                                        f"- {item}"
-                                    )
-
-                            elif isinstance(
-                                tab_data,
-                                dict
-                            ):
-
-                                st.write(
-                                    tab_data.get(
-                                        "content",
-                                        ""
-                                    )
+                            for item in tab_data:
+                            
+                                st.markdown(
+                                    f"- {item}"
                                 )
 
-                                for cite in tab_data.get(
-                                    "citations",
-                                    []
-                                ):
+                        elif isinstance(
+                            tab_data,
+                            dict
+                        ):
 
-                                    st.markdown(
-                                        f"- {cite}"
-                                    )
+                            st.write(
+                                tab_data.get(
+                                    "content",
+                                    ""
+                                )
+                            )
 
-                            else:
-                            
-                                st.write(tab_data)
+                            for cite in tab_data.get(
+                                "citations",
+                                []
+                            ):
+
+                                st.markdown(
+                                    f"- {cite}"
+                                )
+
+                        else:
+                        
+                            st.write(tab_data)
                     # with tabs[tab_idx]:
                     #     tab_data = tab_content[tab_name]
                     #     if isinstance(tab_data, list):
@@ -818,12 +966,7 @@ if awaiting_approval:
                     "content": body,
                     "citations": section.get("citations", []),
                 }
-        analysis_tabs.extend([
-
-    
-
-    "Chat With PDF"
-])
+       
 
         if analysis_tabs:
             tabs = st.tabs(analysis_tabs)
@@ -831,140 +974,14 @@ if awaiting_approval:
                 with tabs[t_idx]:
                                 
                     # =====================================
-                    # SEARCH PDF
-                    # =====================================
-                
-                    # # =====================================
-                    # # SEARCH PDF
-                    # # =====================================
-
-                    # if tab_name == "Search PDF":
-                    
-                    #     search_query = st.text_input(
-                        
-                    #         "Search inside uploaded PDFs",
-
-                    #         key="approval_search"
-                    #     )
-
-                    #     if search_query:
-                        
-                    #         vector_db = result.get(
-                    #             "vector_db"
-                    #         )
-
-                    #         if not vector_db:
-                            
-                    #             st.error(
-                    #                 "No PDF database available."
-                    #             )
-
-                    #         else:
-                            
-                    #             docs = retrieve_documents(
-                                
-                    #                 vector_db=vector_db,
-
-                    #                 query=search_query,
-
-                    #                 k=8,
-
-                    #                 rerank_top_k=5
-                    #             )
-
-                    #             if not docs:
-                                
-                    #                 st.warning(
-                    #                     "No matching PDF content found."
-                    #                 )
-
-                    #             else:
-                                
-                    #                 st.success(
-                    #                     f"Found {len(docs)} matching sections"
-                    #                 )
-
-                    #                 for idx, doc in enumerate(docs):
-                                    
-                    #                     title = doc.get(
-                    #                         "title",
-                    #                         f"Chunk {idx+1}"
-                    #                     )
-
-                    #                     content = doc.get(
-                    #                         "content",
-                    #                         ""
-                    #                     )
-
-                    #                     source = doc.get(
-                    #                         "url",
-                    #                         "Unknown Source"
-                    #                     )
-
-                    #                     with st.expander(title):
-                                        
-                    #                         st.write(content)
-
-                    #                         st.caption(
-                    #                             source
-                    #                         )
-                
-                    # =====================================
-                    # CHAT WITH PDF
-                    # =====================================
-                
-                    if tab_name == "Chat With PDF":
-                    
-                        followup_query = st.text_input(
-                        
-                            "Ask about uploaded PDF/research",
-                
-                            key="approval_followup"
-                        )
-                
-                        if st.button(
-                        
-                            "Ask PDF",
-                
-                            key="approval_ask_btn"
-                        ):
-                
-                            vector_db = result.get(
-                                "vector_db"
-                            )
-                
-                            if not vector_db:
-                            
-                                st.error(
-                                    "No PDF database available."
-                                )
-                
-                            else:
-                            
-                                with st.spinner(
-                                    "Searching PDF..."
-                                ):
-                
-                                    answer = chat_with_report(
-                                    
-                                        vector_db=vector_db,
-                
-                                        query=followup_query
-                                    )
-                
-                                st.write(answer)
-                
-                    # =====================================
                     # NORMAL TABS
                     # =====================================
-                
-                    else:
                     
-                        tab_data = analysis_content.get(
+                    tab_data = analysis_content.get(
                             tab_name
                         )
                 
-                        if isinstance(
+                    if isinstance(
                             tab_data,
                             list
                         ):
@@ -975,7 +992,7 @@ if awaiting_approval:
                                     f"- {item}"
                                 )
                 
-                        elif isinstance(
+                    elif isinstance(
                             tab_data,
                             dict
                         ):
@@ -1004,7 +1021,7 @@ if awaiting_approval:
                                         f"- {cite}"
                                     )
                 
-                        else:
+                    else:
                         
                             st.write(tab_data)
                 # with tabs[t_idx]:
@@ -1079,48 +1096,10 @@ if awaiting_approval:
                 st.session_state["uploader_reset_counter"] += 1
                 st.rerun()
 
-        # REFINE
-        # elif refine:
-        #     with st.spinner("Refining Research..."):
-        #         result["awaiting_human_approval"] = False
-        #         result["human_feedback"] = user_feedback
-        #         # result["errors"] = []
-
-        #         # Reset retries for new refinement cycle
-
-        #         result["retries"] = {}
-        #         result["next_agent"] = "human_intent_router"
-
-        #         final_result, hit_error = stream_graph(result, recursion_limit=20)
-        #         SessionManager.save_result(final_result)
-
-        #         if hit_error:
-
-        #            current_session["workflow_running"] = False
-
-        #            current_session["workflow_result"] = final_result
-
-                  
-        #            st.error(
-        #                "Research refinement failed due to API/model error."
-        #            )
-
-        #            st.stop()
-
-        #         st.rerun()
         elif refine:
 
             with st.spinner("Refining Research..."):
 
-                # result["previous_report"] = result.get(
-                #     "report",
-                #     {}
-                # )
-
-                # result["previous_analysis"] = result.get(
-                #     "analysis",
-                #     {}
-                # )
 
                 result["awaiting_human_approval"] = False
 
@@ -1129,6 +1108,7 @@ if awaiting_approval:
                 result["retries"] = {}
 
                 result["next_agent"] = "human_intent_router"
+
                 # =====================================
                 # STORE PREVIOUS SNAPSHOT
                 # =====================================
@@ -1192,15 +1172,15 @@ if awaiting_approval:
                     "\n========== SAVED PREVIOUS ANALYSIS ==========\n"
                 )
 
-                print(
-                    result["previous_analysis"]
-                )
+                # print(
+                #     result["previous_analysis"]
+                # )
 
-                print("\n========== SAVED PREVIOUS REPORT ==========\n")
-                print(result["previous_report"])
+                # print("\n========== SAVED PREVIOUS REPORT ==========\n")
+                # print(result["previous_report"])
 
-                print("\n========== SAVED PREVIOUS ANALYSIS ==========\n")
-                print(result["previous_analysis"])
+                # print("\n========== SAVED PREVIOUS ANALYSIS ==========\n")
+                # print(result["previous_analysis"])
 
                 final_result, hit_error = stream_graph(
                     result,
@@ -1336,6 +1316,61 @@ else:
 # GENERATE
 # =========================================================
 
+def validate_uploaded_pdf(uploaded_file):
+
+    try:
+
+        if uploaded_file is None:
+
+            return False, (
+                "No file provided"
+            )
+
+        uploaded_file.seek(0)
+
+        file_bytes = uploaded_file.read()
+
+        uploaded_file.seek(0)
+
+        # =====================================
+        # EMPTY FILE
+        # =====================================
+
+        if not file_bytes:
+
+            return False, (
+                f"{uploaded_file.name} is empty"
+            )
+
+        # =====================================
+        # CORRUPTED / TOO SMALL
+        # =====================================
+
+        if len(file_bytes) < 100:
+
+            return False, (
+                f"{uploaded_file.name} appears corrupted"
+            )
+
+        # =====================================
+        # PDF HEADER CHECK
+        # =====================================
+
+        if not file_bytes.startswith(
+            b"%PDF"
+        ):
+
+            return False, (
+                f"{uploaded_file.name} is not a valid PDF"
+            )
+
+        return True, ""
+
+    except Exception as e:
+
+        return False, str(e)
+
+
 if generate_btn:
 
     if not query.strip():
@@ -1343,6 +1378,43 @@ if generate_btn:
         st.stop()
 
     current_session["workflow_running"] = True
+
+    # =====================================
+    # VALIDATE PDFs
+    # =====================================
+
+    validation_errors = []
+
+    for uploaded_file in uploaded_files:
+
+        is_valid, error_msg = (
+
+            validate_uploaded_pdf(
+                uploaded_file
+            )
+        )
+
+        if not is_valid:
+
+            validation_errors.append(
+                error_msg
+            )
+
+    if validation_errors:
+
+        current_session[
+            "workflow_running"
+        ] = False
+
+        st.error(
+            "Invalid PDF file(s) detected"
+        )
+
+        for err in validation_errors:
+
+            st.warning(err)
+
+        st.stop()
 
     pdf_message_entries = []
     uploaded_file_objects = list(uploaded_files)
@@ -1376,16 +1448,33 @@ if generate_btn:
             for uf in uploaded_file_objects:
                 file_path = save_uploaded_file(uf)
                 docs = load_pdf(file_path)
+
+                if not docs:
+
+                    raise ValueError(
+
+                        f"{uf.name} contains "
+                        "no readable content"
+                    )
+
                 all_docs.extend(docs)
 
             chunks = split_documents(all_docs)
+
+            if not chunks:
+
+                raise ValueError(
+
+                    "Uploaded PDF contains "
+                    "no extractable text"
+                )
             # vector_db = create_vectorstore(chunks)
             delete_vectorstore(
     st.session_state.current_session_id
 )
             vector_db = create_vectorstore(chunks,st.session_state.current_session_id)
             st.success("PDF processing complete.")
-          # =========================================
+        # =========================================
         # BUILD CONTEXT-AWARE QUERY
         # =========================================
         
@@ -1522,6 +1611,8 @@ if generate_btn:
             "citations": [],
             "errors": [],
             "retries": {},
+            "critical_error": False,
+            "error": {},
             
             "workflow_complete": False,
             "next_agent": "supervisor",
@@ -1560,9 +1651,55 @@ if generate_btn:
                 stream_mode="updates"
             )
             for event in events:
+                print("\n" + "=" * 100)
+                print("RAW GRAPH EVENT")
+                print("=" * 100)
+
+                print(event)
+
+                print("=" * 100 + "\n")
             # for mode, event in events:
                 
                 for node, value in event.items():
+
+                    print("\n" + "=" * 100)
+                    print("NODE EVENT")
+                    print("=" * 100)
+
+                    print("NODE:")
+                    print(node)
+
+                    print("\nVALUE:")
+                    print(value)
+
+                    print("\nVALUE TYPE:")
+                    print(type(value))
+
+                    print("\nCRITICAL ERROR:")
+                    print(
+                        value.get(
+                            "critical_error"
+                        )
+                        if isinstance(
+                            value,
+                            dict
+                        )
+                        else None
+                    )
+
+                    print("\nERROR:")
+                    print(
+                        value.get(
+                            "error"
+                        )
+                        if isinstance(
+                            value,
+                            dict
+                        )
+                        else None
+                    )
+
+                    print("=" * 100 + "\n")
 
                     agent_box.info(
                         f"Running agent: {node}"
@@ -1700,6 +1837,42 @@ if generate_btn:
                             ]:
 
                                 final_result[k] = v
+
+                        print("\n" + "=" * 100)
+                        print("FINAL RESULT AFTER MERGE")
+                        print("=" * 100)
+
+                        print("CRITICAL ERROR:")
+                        print(
+                            final_result.get(
+                                "critical_error"
+                            )
+                        )
+
+                        print("\nERROR:")
+                        print(
+                            final_result.get(
+                                "error"
+                            )
+                        )
+
+                        print("=" * 100 + "\n")
+
+                        if value.get("error"):
+
+                            final_result["error"] = value["error"]
+
+                            print("\n" + "=" * 100)
+                            print("ERROR MERGED INTO FINAL RESULT")
+                            print("=" * 100)
+
+                            print("SOURCE ERROR:")
+                            print(value["error"])
+
+                            print("\nFINAL RESULT ERROR:")
+                            print(final_result.get("error"))
+
+                            print("=" * 100 + "\n")
                     
                         if (
                             final_result.get("vector_db") is None
@@ -1735,12 +1908,36 @@ if generate_btn:
                         # CRITICAL ERROR
                         # =====================================
 
-                        if value.get(
-                            "critical_error",
-                            False
+                        if (
+                            value.get(
+                                "critical_error",
+                                False
+                            )
+                            or
+                            final_result.get(
+                                "critical_error",
+                                False
+                            )
                         ):
 
+                            print("\n" + "=" * 100)
+                            print("CRITICAL ERROR RECEIVED FROM GRAPH")
+                            print("=" * 100)
+
+                            print("NODE:")
+                            print(node)
+
+                            print("\nVALUE:")
+                            print(value)
+
+                            print("\nFINAL RESULT:")
+                            print(final_result)
+
+                            print("=" * 100 + "\n")
+
                             hit_error = True
+
+                            break
 
                             raw_errors = final_result.get(
                                 "errors",
@@ -1811,6 +2008,17 @@ if generate_btn:
                     break
             
             
+            print("\n" + "=" * 100)
+            print("STREAM FINISHED")
+            print("=" * 100)
+
+            print("HIT ERROR:")
+            print(hit_error)
+
+            print("\nFINAL RESULT:")
+            print(final_result)
+
+            print("=" * 100 + "\n")
 
         except Exception as stream_error:
                 
@@ -1868,6 +2076,23 @@ if generate_btn:
         # CHANGE 4: Updated hit_error block — renders error inline, uses st.stop()
         if hit_error:
         
+            print("\n" + "=" * 100)
+            print("ENTERED HIT_ERROR BLOCK")
+            print("=" * 100)
+
+            print("FINAL RESULT ERROR:")
+            print(
+                final_result.get(
+                    "error",
+                    {}
+                )
+            )
+
+            print("\nFINAL RESULT:")
+            print(final_result)
+
+            print("=" * 100 + "\n")
+
             current_session[
                 "workflow_running"
             ] = False
@@ -1875,6 +2100,7 @@ if generate_btn:
             current_session[
                 "workflow_result"
             ] = final_result
+
             save_error_message(
 
             final_result.get(
@@ -1882,23 +2108,66 @@ if generate_btn:
         {}
     )
 )
-            raw_errors = final_result.get(
-                "errors",
-                ["Unknown workflow failure"]
+
+            print("\n" + "=" * 100)
+            print("AFTER SAVE_ERROR_MESSAGE")
+            print("=" * 100)
+
+            msgs = (
+                SessionManager
+                .get_current_session()
+                .get(
+                    "messages",
+                    []
+                )
             )
 
-            err_title, err_body = classify_error(
+            print(
+                f"MESSAGE COUNT: {len(msgs)}"
+            )
 
-    final_result.get(
-        "error",
-        {}
-    )
-)
-            # =====================================
-            # SAVE ERROR INTO CHAT HISTORY
-            # =====================================
+            for i, m in enumerate(msgs):
+                print(f"\nMESSAGE {i}")
+                print(m)
 
-            
+            print("=" * 100 + "\n")
+
+            current_session[
+                "workflow_running"
+            ] = False
+
+            current_session[
+                "workflow_result"
+            ] = final_result
+
+            print(
+                "\n========== ERROR SAVED =========="
+            )
+
+            messages = (
+                SessionManager
+                .get_current_session()
+                .get(
+                    "messages",
+                    []
+                )
+            )
+
+            print(
+                f"MESSAGE COUNT: {len(messages)}"
+            )
+
+            if messages:
+                print(
+                    "\nLAST MESSAGE:"
+                )
+                print(
+                    messages[-1]
+                )
+
+            print(
+                "\n================================="
+            )
 
             st.session_state[
                 "reset_query"
@@ -1907,8 +2176,7 @@ if generate_btn:
             st.session_state[
                 "uploader_reset_counter"
             ] += 1
-            # st.rerun()
-            st.stop()
+            st.rerun()
 
         elif (
                 
@@ -1945,7 +2213,7 @@ if generate_btn:
             ] += 1
         
             st.rerun()
-    # CHANGE 5: Updated outer exception block — persists result, uses st.stop()
+    # CHANGE 5: Updated outer exception block — persists result, uses st.rerun()
     except Exception as e:
 
         raw_tb = traceback.format_exc()
@@ -1999,4 +2267,4 @@ if generate_btn:
             "uploader_reset_counter"
         ] += 1
 
-        st.stop()
+        st.rerun()

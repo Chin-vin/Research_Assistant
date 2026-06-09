@@ -525,7 +525,9 @@ builder.add_conditional_edges(
             "reporter",
 
         "pdf_retriever":
-            "pdf_retriever"
+            "pdf_retriever",
+        "human_approval":
+            "human_approval"
     }
 )
 # builder.add_conditional_edges(
